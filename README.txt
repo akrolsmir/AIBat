@@ -1,3 +1,9 @@
+This program assists mappers and modders by automating many of the tedious, clerical checks that otherwise would have been done by hand.
+
+Its use is designed to be intuitive, but if you have any questions drop by http://osu.ppy.sh/forum/t/55305.
+
+Enjoy!
+
 Changelog:
 
 Version 1.1- 3/27/12

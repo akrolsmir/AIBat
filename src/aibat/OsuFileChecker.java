@@ -82,7 +82,7 @@ public class OsuFileChecker
                         + " ms; it may get tiring to play.\n";
 
                 // Check if properly NC'd:
-                if ( !OsuFileParser.isNewCombo( h.getCombo() ) )
+                if ( !h.isNewCombo() )
                 {
                     spinNCCheck += notations.get( h )
                         + " - This spinner lacks a new combo.\n";
@@ -94,7 +94,7 @@ public class OsuFileChecker
                 {
                     HitObject nextObj = iter.next();
                     if ( !( nextObj instanceof Spinner )
-                        && !OsuFileParser.isNewCombo( nextObj.getCombo() ) )
+                        && !nextObj.isNewCombo() )
                     {
                         spinNCCheck += notations.get( nextObj )
                             + " - Put a new combo on this note so the previous spinner ends properly.\n";

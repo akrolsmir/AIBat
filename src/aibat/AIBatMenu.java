@@ -41,7 +41,7 @@ public class AIBatMenu extends JMenuBar
         + "Note: Still incomplete, see changelog.\n"
         + "If it doesn't work, chances are there's a decimal somewhere there shouldn't be.";
 
-    private final static String ABOUT = AIBatWindow.version
+    private final static String ABOUT = AIBatWindow.VERSION
         + "\n\n"
         + "Written by akrolsmir in Java.\n"
         + "Please post or PM suggestions, comments, and problems.\n\n"

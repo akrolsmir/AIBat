@@ -1,3 +1,5 @@
 *.osu.orig
-bin/*
+bin/
 .settings/*
+settings.txt
+origFiles/

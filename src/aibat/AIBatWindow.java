@@ -22,7 +22,7 @@ import javax.swing.UIManager;
 
 public class AIBatWindow extends JFrame implements ActionListener, KeyListener
 {
-    public final static String version = "AIBat v1.1";
+    public final static String VERSION = "AIBat v1.1";
 
     private JTextField textField;
 
@@ -39,7 +39,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener
 
     public AIBatWindow()
     {
-        super( version );
+        super( VERSION );
         long start = System.currentTimeMillis();
 
         directory = System.getProperty( "user.dir" );
@@ -229,7 +229,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener
                 fileOpened = true;
                 if ( tabs.getTabCount() == AIBatTabs.numOverall )
                     Util.errorMessage( "No .osu files found.", this );
-                this.setTitle( version + " - " + Util.cutPath( newFolder ) );
+                this.setTitle( VERSION + " - " + Util.cutPath( newFolder ) );
                 tabs.requestFocusInWindow();
             }
             else

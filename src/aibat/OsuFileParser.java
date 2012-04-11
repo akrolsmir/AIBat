@@ -1,4 +1,5 @@
 package aibat;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,7 +69,8 @@ public class OsuFileParser {
 	    processNotation();
 	    processBreaks();
 	    ofc = new OsuFileChecker(this);
-	} catch (IndexOutOfBoundsException e) {
+	}
+	catch (IndexOutOfBoundsException e) {
 	    Util.errorMessage("Found no hitobjects in:\n"
 		    + file.getAbsolutePath()
 		    + "\nPlace at least 1 hitobject to analyze the file.");
@@ -82,10 +84,13 @@ public class OsuFileParser {
 	while (sc.hasNextLine()) {
 	    String line = sc.nextLine();
 	    if (line.length() > 0) {
-		int combo = findType(Integer.parseInt(line.split(",")[3]));
-		if (combo == 1) {
+		//Switches based on combo
+		int combo = Integer.parseInt(line.split(",")[3]);
+		switch (Integer.lowestOneBit(combo)) {
+		case 1:
 		    hitObjects.add(new Circle(line));
-		} else if (combo == 2) {
+		    break;
+		case 2:
 		    int time = Integer.parseInt(line.split(",")[2]);
 		    // Counts the number of points in slider
 		    int p = 1;
@@ -96,11 +101,15 @@ public class OsuFileParser {
 		    try {
 			hitObjects.add(new Slider(line, p, getSliderX(), timer
 				.getEffectiveBeatSpace(time)));
-		    } catch (Exception e) {
+		    }
+		    catch (Exception e) {
 			Util.errorException(e, "Slider: " + line);
 		    }
-		} else
+		    break;
+		default:
 		    hitObjects.add(new Spinner(line));
+		    break;
+		}
 	    }
 	}
 	startTime = hitObjects.get(0).getTime();
@@ -108,29 +117,14 @@ public class OsuFileParser {
 	Util.logTime(start);// TODO remove
     }
 
-    // Finds the type of hitObj given the combo. 1 = circle, 2 = slider, 8 =
-    // spinner
-    public static int findType(int combo) {
-	String bin = Integer.toBinaryString(combo);
-	if (bin.charAt(bin.length() - 1) == '1')
-	    return 1;
-	else if (bin.charAt(bin.length() - 2) == '1')
-	    return 2;
-	else
-	    return 8;
-    }
 
-    // returns true if combo indicates NC
-    public static boolean isNewCombo(int combo) {
-	return combo - findType(combo) >= 4;
-    }
 
     // Maps each hitobject to its notation in the format of MM:SS:mmm (#)
     private void processNotation() {
 	notations = new HashMap<HitObject, String>();
 	int current = 0;
 	for (HitObject h : hitObjects) {
-	    if (isNewCombo(h.getCombo()))
+	    if (h.isNewCombo())
 		current = 1;
 	    else
 		current++;
@@ -273,13 +267,14 @@ public class OsuFileParser {
 	return contents.substring(beginIndex, endIndex);
     }
 
-    // public static void main( String[] args )
-    // {
-    // Test runtime
-    // processhitobj takes a lot of time, ~ 5 seconds
-    // - Using split instead of scanner = .6 sec
-    // - Sliders are very slow = 2.3 sec
-    // timer takes about .7 secs
-    // ofc takes almost no time
-    // }
+    public static void main(String[] args) {
+	// Test runtime
+	// processhitobj takes a lot of time, ~ 5 seconds
+	// - Using split instead of scanner = .6 sec
+	// - Sliders are very slow = 2.3 sec
+	// timer takes about .7 secs
+	// ofc takes almost no time
+	//long start = System.currentTimeMillis();
+	//Util.logTime(start);
+    }
 }

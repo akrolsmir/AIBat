@@ -1,3 +1,4 @@
+package aibat;
 import java.awt.BorderLayout;
 import java.awt.Rectangle;
 import javax.swing.*;

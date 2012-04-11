@@ -83,11 +83,12 @@ Version 0.1b - 6/18/11
 ********************
 
 Priorities:
-*- tooltip over popup on click
+*- clean up AIBatTabs, seperate into different tabs, array in the relevant classes.
+*- tooltip instead of popup on click
 *- output difficulty values (Breeze)
 - improve settings, autogenerate settings
 - Settings menu- Permanently disable popup, hide unused warnings
-- Updated the output as suggested by ziin.
+- Update the output to match 
 - Search button in panel
 - reduce cross-dependency from dialogs
 

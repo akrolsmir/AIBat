@@ -1,3 +1,4 @@
+package aibat;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -24,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 
 
 public class Searcher2

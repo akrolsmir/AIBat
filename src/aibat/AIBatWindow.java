@@ -1,5 +1,7 @@
+package aibat;
 // import java.util.*;
 // import java.io.*;
+
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -15,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 
 public class AIBatWindow extends JFrame implements ActionListener, KeyListener
@@ -23,7 +26,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener
 
     private JTextField textField;
 
-    private String directory, sfl;
+    private String directory, songFolderLoc;
 
     private boolean fileOpened;
 
@@ -42,9 +45,9 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener
         directory = System.getProperty( "user.dir" );
         try
         {
-            sfl = new SettingsManager().getSongFolderLoc();
-            if ( sfl.length() > 0 )
-                directory = sfl;
+            songFolderLoc = new SettingsManager().getSongFolderLoc();
+            if ( songFolderLoc.length() > 0 )
+                directory = songFolderLoc;
         }
         catch ( FileNotFoundException e )
         {
@@ -107,6 +110,13 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener
 
     public static void main( String[] args )
     {
+	try {
+	    UIManager
+		    .setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	}
+	catch (Throwable e) {
+	    e.printStackTrace();
+	}
         final AIBatWindow window = new AIBatWindow();
 
         // Adds a confirmation box instead of directly closing
@@ -199,7 +209,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener
         try
         {
             long start = System.currentTimeMillis();
-            if ( sfl != null && sfl.equals( newFolder ) )
+            if ( songFolderLoc != null && songFolderLoc.equals( newFolder ) )
             {
                 Util.errorMessage( "Please don't try to load your entire osu! Songs Folder here.\n"
                     + "It'll probably take forever and lag your computer.",

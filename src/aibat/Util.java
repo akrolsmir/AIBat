@@ -1,3 +1,4 @@
+package aibat;
 import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -25,6 +26,7 @@ import javax.swing.JTextField;
 
 import org.tritonus.share.sampled.TAudioFormat;
 import org.tritonus.share.sampled.file.TAudioFileFormat;
+
 
 
 public final class Util
@@ -187,7 +189,7 @@ public final class Util
     public static String extract( String start, String end, String searchThrough )
     {
         int s = searchThrough.indexOf( start );
-        int e = searchThrough.indexOf( end );
+        int e = searchThrough.indexOf( end, s );
         if ( s < 0 || e < 0 )
             return "";
         return searchThrough.substring( s + start.length(), e );

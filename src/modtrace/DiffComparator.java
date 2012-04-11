@@ -15,7 +15,14 @@ public class DiffComparator {
     // private List<Change> changes; TODO remove Change?
     private String changes = "";
 
-    public String compare(List<HitObject> init, List<HitObject> chng) {
+    private List<HitObject> init, chng;
+
+    public DiffComparator(OsuFileParser orig, OsuFileParser curr) {
+	init = orig.getHitObjects();
+	chng = curr.getHitObjects();
+    }
+
+    public String compare() {
 	Iterator<HitObject> initIter = init.iterator();
 	Iterator<HitObject> chngIter = chng.iterator();
 	HitObject i = initIter.next();
@@ -61,14 +68,14 @@ public class DiffComparator {
 
     private void remove(HitObject h) {
 	// changes += ("Remove: " + h.toString());
-	//TODO switch based on type
+	// TODO switch based on type
 	changes += (Util.formatTime(h.getTime()) + " - " + "Remove this "
 		+ className(h) + ".\n");
     }
 
     private void add(HitObject h) {
 	// changes += ("Add: " + h.toString());
-	//TODO switch based on type
+	// TODO switch based on type
 	changes += (Util.formatTime(h.getTime()) + " - " + "Add a "
 		+ className(h) + ".\n");
     }
@@ -97,8 +104,7 @@ public class DiffComparator {
 	OsuFileParser ofp2 = new OsuFileParser(
 		new File(
 			"C:\\Users\\Akrolsmir\\Desktop\\fripSide - Prominence-Version 2007\\fripSide - prominence -version 2007- (akrolsmir) [Normal_2].osu"));
-	System.out.println(new DiffComparator().compare(ofp1.getHitObjects(),
-		ofp2.getHitObjects()));
+	System.out.println(new DiffComparator(ofp1, ofp2).compare());
 	Util.logTime(start);
     }
 }

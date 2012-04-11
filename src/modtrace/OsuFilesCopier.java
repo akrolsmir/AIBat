@@ -1,53 +1,70 @@
 package modtrace;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 
+import aibat.OsuFileParser;
+
 public class OsuFilesCopier {
+    public final static String ORIG_SUBDIR = "origFiles\\";
+
     private List<File> osuFiles;
+    private Map<File, OsuFileParser> parsedOrigFiles = new TreeMap<File, OsuFileParser>();
 
     // Preference about overwriting;
     private enum OP {
-	NO_PREFERENCE, ALWAYS, NEVER
+	NO_PREFERENCE, ALL, NONE
     }
 
     private OP overwritePreference = OP.NO_PREFERENCE;
 
-    //Copies each osu file to the local folder
+    // Copies each osu file to the local folder
     public OsuFilesCopier(List<File> osuFiles) {
 	this.osuFiles = osuFiles;
 	for (File srcFile : this.osuFiles) {
 
-	    File destFile = new File(srcFile.getName() + ".orig");
+	    File destFile = new File(ORIG_SUBDIR + srcFile.getName() + ".orig");
+	    parsedOrigFiles.put(srcFile, new OsuFileParser(destFile));
+
 	    overwritePreference: switch (overwritePreference) {
-	    case NEVER:
+	    case NONE:
 		break overwritePreference;
 	    case NO_PREFERENCE:
-		// If Always or Yes, continue. If No or Never, finish.
-		// Also, save Always/Never preference for the rest.
+		// If All or Yes, continue. If No, None or closed, finish.
+		// Also, save All/None preference for the rest.
 		if (destFile.exists()) {
-		    Object[] options = { "All", "Yes", "No", "None" };//TODO templating
-		    switch (JOptionPane.showOptionDialog(null, "File \"" + destFile + "\" already exists. Overwrite?\n"
-			    + "(Mod changes are compared against the .orig file.)",
-			    "File Already Exists",
-			    JOptionPane.PLAIN_MESSAGE,
-			    JOptionPane.QUESTION_MESSAGE, null, options,
-			    options[1])) {
+		    Object[] options = { "All", "Yes", "No", "None" };
+		    switch (JOptionPane
+			    .showOptionDialog(
+				    null,
+				    "File \""
+					    + destFile
+					    + "\" already exists. Overwrite?\n\n"
+					    + "(Overwrite only if you want to use the the current .osu file as a new starting reference for mod tracking.)",
+				    "File Already Exists",
+				    JOptionPane.PLAIN_MESSAGE,
+				    JOptionPane.QUESTION_MESSAGE, null,
+				    options, options[2])) {
 		    case 0:
-			overwritePreference = OP.ALWAYS;
+			overwritePreference = OP.ALL;
 		    case 1:
 			break;
 		    case 3:
-			overwritePreference = OP.NEVER;
+			overwritePreference = OP.NONE;
 		    case 2:
+		    default: // if window closed
 			break overwritePreference;
+
 		    }
 		}
-	    case ALWAYS:
+	    case ALL:
 		writeOrigFile(srcFile, destFile);
 		break;
 	    }
@@ -57,9 +74,14 @@ public class OsuFilesCopier {
     private void writeOrigFile(File srcFile, File destFile) {
 	try {
 	    FileUtils.copyFile(srcFile, destFile);
-	    System.out.println("Wrote: " + destFile);//TODO remove
-	} catch (IOException e) {
+	    System.out.println("Wrote: " + destFile);// TODO remove
+	}
+	catch (IOException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    public Map<File, OsuFileParser> getParsedOrigFiles() {
+	return parsedOrigFiles;
     }
 }

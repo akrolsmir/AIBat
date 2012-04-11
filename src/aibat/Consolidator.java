@@ -1,10 +1,9 @@
 package aibat;
+
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
-
-import modtrace.OsuFilesCopier;
 
 // Puts things together for the General and All tabs.
 public class Consolidator {
@@ -43,7 +42,8 @@ public class Consolidator {
 	    if (ext.equals("osu")) {
 		osuFiles.add(file);
 		osuFileParsers.add(new OsuFileParser(file));
-	    } else if (ext.equals("osb")) {
+	    }
+	    else if (ext.equals("osb")) {
 		osbFiles.add(file);
 	    }
 	    // else if ( ext.equals( "png" ) || ext.equals( "jpg" )
@@ -53,17 +53,17 @@ public class Consolidator {
 	    // }
 	    else if (ext.equals("mp3") || ext.equals("ogg")) {
 		musicFiles.add(file);
-	    } else if (ext.equals("wav")) {
+	    }
+	    else if (ext.equals("wav")) {
 		soundFiles.add(file);
-	    } else if (ext.equals("flv") || ext.equals("avi")) {
+	    }
+	    else if (ext.equals("flv") || ext.equals("avi")) {
 		hasVid = true;
 	    }
 	}
 	checkRedColourKiaiEpilepsy();
 	skinSBChecker = new SkinSBChecker(dir, osuFileParsers, osbFiles,
 		epilepsyWarningFound);
-	// TODO remove
-	new OsuFilesCopier(osuFiles);
     }
 
     public String checkGenMeta() {
@@ -194,7 +194,8 @@ public class Consolidator {
 	    result += "This folder's size is "
 		    + toTenths.format(sizeInMB)
 		    + " MB, which is greater than the allowed size of 20.0 MB with video.\n";
-	} else if (!hasVid && sizeInMB > MAX_FILE_SIZE_NOVID) {
+	}
+	else if (!hasVid && sizeInMB > MAX_FILE_SIZE_NOVID) {
 	    result += "This folder's size is "
 		    + toTenths.format(sizeInMB)
 		    + " MB, which is greater than the allowed size of 10.0 MB without video.\n";
@@ -220,7 +221,8 @@ public class Consolidator {
 			    + Util.getBitrate(song)
 			    + " kb/s, which is above the maximum of "
 			    + MAX_BITRATE + " kb/s.\n");
-	    } catch (Exception e) {
+	    }
+	    catch (Exception e) {
 		e.printStackTrace();
 	    }
 	}

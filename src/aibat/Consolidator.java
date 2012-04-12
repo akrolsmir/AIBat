@@ -1,10 +1,21 @@
 package aibat;
+
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
+
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import modtrace.OsuFilesCopier;
+
+import org.tritonus.share.sampled.TAudioFormat;
+import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 // Puts things together for the General and All tabs.
 public class Consolidator {
@@ -43,7 +54,8 @@ public class Consolidator {
 	    if (ext.equals("osu")) {
 		osuFiles.add(file);
 		osuFileParsers.add(new OsuFileParser(file));
-	    } else if (ext.equals("osb")) {
+	    }
+	    else if (ext.equals("osb")) {
 		osbFiles.add(file);
 	    }
 	    // else if ( ext.equals( "png" ) || ext.equals( "jpg" )
@@ -53,9 +65,11 @@ public class Consolidator {
 	    // }
 	    else if (ext.equals("mp3") || ext.equals("ogg")) {
 		musicFiles.add(file);
-	    } else if (ext.equals("wav")) {
+	    }
+	    else if (ext.equals("wav")) {
 		soundFiles.add(file);
-	    } else if (ext.equals("flv") || ext.equals("avi")) {
+	    }
+	    else if (ext.equals("flv") || ext.equals("avi")) {
 		hasVid = true;
 	    }
 	}
@@ -194,7 +208,8 @@ public class Consolidator {
 	    result += "This folder's size is "
 		    + toTenths.format(sizeInMB)
 		    + " MB, which is greater than the allowed size of 20.0 MB with video.\n";
-	} else if (!hasVid && sizeInMB > MAX_FILE_SIZE_NOVID) {
+	}
+	else if (!hasVid && sizeInMB > MAX_FILE_SIZE_NOVID) {
 	    result += "This folder's size is "
 		    + toTenths.format(sizeInMB)
 		    + " MB, which is greater than the allowed size of 10.0 MB without video.\n";
@@ -207,20 +222,19 @@ public class Consolidator {
 	StringBuilder result = new StringBuilder();
 	for (File song : musicFiles) {
 	    try {
-		int bitrate = Util.getBitrate(song);
+		int bitrate = getBitrate(song);
 		if (bitrate < MIN_BITRATE)
 		    result.append("The bitrate for "
-			    + Util.cutPath(song.toString()) + " is "
-			    + Util.getBitrate(song)
+			    + Util.cutPath(song.toString()) + " is " + bitrate
 			    + " kb/s, which is below the miniumum of "
 			    + MIN_BITRATE + " kb/s.\n");
 		else if (bitrate > MAX_BITRATE)
 		    result.append("The bitrate for "
-			    + Util.cutPath(song.toString()) + " is "
-			    + Util.getBitrate(song)
+			    + Util.cutPath(song.toString()) + " is " + bitrate
 			    + " kb/s, which is above the maximum of "
 			    + MAX_BITRATE + " kb/s.\n");
-	    } catch (Exception e) {
+	    }
+	    catch (Exception e) {
 		e.printStackTrace();
 	    }
 	}
@@ -273,6 +287,19 @@ public class Consolidator {
 			"C:\\Users\\Akrolsmir\\Desktop\\Gaming Programs\\osu!\\Songs\\27625 La Luna - Take Me (Nightcore Mix)"));
 	System.out.println("done");
 
+    }
+
+    private static int getBitrate(File file)
+	    throws UnsupportedAudioFileException, IOException {
+	AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
+	AudioFormat format = fileFormat.getFormat();
+	if (fileFormat instanceof TAudioFileFormat) {
+	    Map<?, ?> properties = ((TAudioFormat) format).properties();
+	    return (Integer) properties.get("bitrate") / 1000;
+	}
+	else {
+	    throw new UnsupportedAudioFileException();
+	}
     }
 
     // Check

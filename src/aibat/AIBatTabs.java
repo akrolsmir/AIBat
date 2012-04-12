@@ -1,6 +1,7 @@
 package aibat;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
     // @formatter:on
     private static final String TIME_REGEX = "(\\d{2}:\\d{2}:\\d{3}(?: \\(\\d+\\))?(?: - )?)";
 
-    private static final String LINK_REGEX = "<A Href=\"$1\">$1</A>";
+    private static final String LINK_REGEX = "<A Href=\"$1\" Title=\"Click to copy\">$1</A>";
 
     private boolean popupDisabled = false;
 
@@ -164,8 +165,8 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 	    // Check to see if warning is null (didn't initialize fully), empty
 	    // (no warning).
 	    if (warn[1][i] == null)
-		System.out.println("Failed to properly initialize "
-			+ warn[0][i]);// TODO handle properly
+		Util.errorMessage("Failed to properly initialize "
+			+ warn[0][i]);
 	    else if (warn[1][i].length() > 0) {
 		toShow.append(warn[1][i]);
 	    }
@@ -176,17 +177,18 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 
     public void hyperlinkUpdate(HyperlinkEvent e) {
 	if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
-	    Object[] o = { "OK", "Don't show this popup again" };
+//	    Object[] o = { "OK", "Don't show this popup again" };
 	    Util.copyStringToClipboard(e.getDescription());
-	    if (!popupDisabled) {
-		int n = JOptionPane.showOptionDialog(this,
-			"Successfully copied to clipboard.", "Copied",
-			JOptionPane.YES_NO_OPTION,
-			JOptionPane.INFORMATION_MESSAGE, null, o, // the titles
-								  // of buttons
-			o[0]); // default button title
-		popupDisabled = n == JOptionPane.NO_OPTION;
-	    }
+	    //new Notification(e.getDescription(), this.getTopLevelAncestor());
+//	    if (!popupDisabled) {
+//		int n = JOptionPane.showOptionDialog(this,
+//			"Successfully copied to clipboard.", "Copied",
+//			JOptionPane.YES_NO_OPTION,
+//			JOptionPane.INFORMATION_MESSAGE, null, o, // the titles
+//								  // of buttons
+//			o[0]); // default button title
+//		popupDisabled = n == JOptionPane.NO_OPTION;
+//	    }
 	}
     }
 
@@ -208,6 +210,7 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 	toShow = toShow.replaceAll("\\n", "<br />");
 	textArea.setText(toShow);
 	textArea.setEditable(false);
+	textArea.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 	textArea.addHyperlinkListener(this);
 
 	JScrollPane scrollPane = new JScrollPane(textArea);
@@ -298,10 +301,10 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
     }
 
     public void copyAllWarningsToClipboard() {
-	Util.copyStringToClipboard(getAllWarnings());
-	JOptionPane.showMessageDialog(null,
-		"Successfully copied to clipboard.", "Copied",
-		JOptionPane.INFORMATION_MESSAGE);
+	Util.copyStringToClipboard(getAllWarnings(), "Copied all warnings to the clipboard", this.getTopLevelAncestor());
+//	JOptionPane.showMessageDialog(null,
+//		"Successfully copied to clipboard.", "Copied",
+//		JOptionPane.INFORMATION_MESSAGE);
     }
 
     // TODO integrate as another tab?

@@ -21,4 +21,9 @@ public class GeneralTab extends AIBatTab {
 	allContent.put("Background", c.getSkinSBChecker().checkBG());
 	allContent.put("Custom Hitsounds", c.checkCustomHitsounds());
     }
+
+    @Override
+    public String getTabName() {
+	return "General";
+    }
 }

@@ -24,4 +24,9 @@ public class AllTab extends AIBatTab {
 
     }
 
+    @Override
+    public String getTabName() {
+	return "All .osu Files";
+    }
+
 }

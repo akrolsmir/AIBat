@@ -26,4 +26,9 @@ public class SkinSBTab extends AIBatTab {
 	allContent.put("Epilepsy Warning", s.suggestEpilepsy());
     }
 
+    @Override
+    public String getTabName() {
+	return "Skin/SB";
+    }
+
 }

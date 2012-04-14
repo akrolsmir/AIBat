@@ -76,7 +76,7 @@ public class Consolidator {
 	skinSBChecker = new SkinSBChecker(dir, osuFileParsers, osbFiles,
 		epilepsyWarningFound);
 	// TODO remove
-	new OsuFilesCopier(osuFiles);
+	//new OsuFilesCopier(osuFiles);
     }
 
     public String checkGenMeta() {

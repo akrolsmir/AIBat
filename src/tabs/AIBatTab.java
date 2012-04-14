@@ -22,9 +22,12 @@ public abstract class AIBatTab extends JPanel {
     // allContent maps section titles to their content
     protected Map<String, String> allContent = new TreeMap<String, String>();
 
-    private static final String TIME_REGEX = "(\\d{2}:\\d{2}:\\d{3}(?: \\(\\d+\\))?)";//(?: - )?
+    // (?: - )?
+    private static final String TIME_REGEX = "(\\d{2}:\\d{2}:\\d{3}(?: \\(\\d+\\))?)";
     private static final String LINK_REGEX = "<a href=\"$1\">$1</a>";
-    protected static final String FORMAT_TO_HTML = "<b><a href=\"%2$s\" style=\"font-family:georgia;font-size:16\">%1$s</a></b><br />%3$s<br />";
+    public static final String FORMAT_TO_HTML = "<b><a href=\"%2$s\" style=\"font-family:georgia;font-size:16\">%1$s</a></b><br />%3$s<br />";
+    public static final String FORMAT_TO_PLAIN = "<b><u><a style=\"font-family:georgia;font-size:16\">%1$s</a></u></b><br />%4$s<br />";
+    public static final String FORMAT_TO_BBCODE = "%2$s\n";
 
     private JEditorPane textArea = new JEditorPane();
 
@@ -34,6 +37,7 @@ public abstract class AIBatTab extends JPanel {
 	// showText(allContentToString(FORMAT_TO_HTML));
     }
 
+    // TODO get scrolling to work properly
     private void drawGUI() {
 	setBackground(Color.LIGHT_GRAY);
 
@@ -48,7 +52,7 @@ public abstract class AIBatTab extends JPanel {
 
 	textArea.setEditable(false);
 	// TODO fix so it's not *always* TEXT_CURSOR
-	//textArea.setCursor(new Cursor(Cursor.TEXT_CURSOR));
+	// textArea.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 	textArea.addHyperlinkListener(new HyperlinkCopier());
 	textArea.setText("Content Pane");
 	JScrollPane scrollPane = new JScrollPane(textArea);
@@ -61,25 +65,13 @@ public abstract class AIBatTab extends JPanel {
 
     public void showText(String toShow) {
 	if (toShow == null || toShow.length() == 0) {
-	    textArea.setText("Nothing to see!");
+	    textArea.setText("<a style=\"font-family:georgia;font-size:16\">Nothing to see!</a>");
 	    return;
 	}
 	textArea.setText(toShow);
-
-	// TODO get scrolling to work properly
-	// textArea.scrollRectToVisible( new Rectangle( 100, 100, 100, 100 ) );
-
-	// try
-	// {
-	// Rectangle r = textArea.modelToView( 10 );
-	// System.out.println(r==null);
-	// textArea.scrollRectToVisible( r );
-	// }
-	// catch ( BadLocationException e )
-	// {
-	// e.printStackTrace();
-	// }
     }
+
+    public abstract String getTabName();
 
     private class HyperlinkCopier implements HyperlinkListener {
 	@Override
@@ -103,12 +95,13 @@ public abstract class AIBatTab extends JPanel {
 
 	    if (content == null || content.length() == 0)
 		continue;
-	    // This messy part displays an html version and but links to BBCode
-	    String HTML_Content = content.replaceAll(TIME_REGEX, LINK_REGEX)
+	    // This messy part displays an html version but links to BBCode
+	    String HTMLContent = content.replaceAll(TIME_REGEX, LINK_REGEX)
 		    .replaceAll("\\n", "<br />") + "<br />";
-	    content = "[b][u]" + title + "[/u][/b]\n" + content;
-	    result.append(String.format(format, title, content, HTML_Content));
-
+	    String BBCodeContent = "[b][u]" + title + "[/u][/b]\n" + content;
+	    String plainContent = content.replaceAll("\\n", "<br />");
+	    result.append(String.format(format, title, BBCodeContent,
+		    HTMLContent, plainContent));
 	}
 	return result.toString();
     }

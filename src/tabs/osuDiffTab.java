@@ -1,14 +1,17 @@
 package tabs;
 
 import aibat.OsuFileChecker;
+import aibat.OsuFileParser;
 
 public class osuDiffTab extends AIBatTab {
 
     private OsuFileChecker ofc;
+    private final String diffName;
 
-    public osuDiffTab(OsuFileChecker ofc) {
+    public osuDiffTab(OsuFileParser ofp) {
 	super();
-	this.ofc = ofc;
+	ofc = ofp.getOsuFileChecker();
+	diffName = ofp.getDiff();
 	fillAllContent();
 	showText(allContentToString(FORMAT_TO_HTML));
     }
@@ -23,6 +26,11 @@ public class osuDiffTab extends AIBatTab {
 	allContent.put("Stack Leniency", ofc.getStackLenCheck());
 	allContent.put("Non-Downbeat Kiai Times", ofc.getWrongKiais());
 	allContent.put("Preview Point", ofc.getPreviewCheck());
+    }
+
+    @Override
+    public String getTabName() {
+	return diffName;
     }
 
 }

@@ -20,19 +20,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import tabs.AIBatTabbedPane;
+
 public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
     public final static String version = "AIBat v2.0";
 
     private JTextField textField;
-
     private String directory, songFolderLoc;
-
     private boolean fileOpened;
-
-    private AIBatTabs tabs;
-
+    private AIBatTabbedPane tabs;
     private Consolidator c;
-
     private Searcher2 searcher;
 
     public AIBatWindow() {
@@ -50,25 +47,11 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	}
 	setJMenuBar(new AIBatMenu(this));
 
-	tabs = new AIBatTabs();
+	tabs = new AIBatTabbedPane();
 	tabs.addKeyListener(this);
 	tabs.addTab("Startup", startupPanel());
 	add(tabs);
 
-	// tabbedPane.addTab( "Tab 1", null, panel1, "Does nothing" );
-	//
-	// JComponent panel4 = new JPanel();
-	// panel4.setPreferredSize( new Dimension( 410, 50 ) );
-	// tabbedPane.addTab( "Tab 4", null, panel4, "Does nothing at all" );
-	// tabbedPane.setMnemonicAt( 3, KeyEvent.VK_4 );
-
-	// getRootPane().getInputMap( JComponent.WHEN_IN_FOCUSED_WINDOW )
-	// .put( KeyStroke.getKeyStroke( "ENTER" ), "enterB" );
-	// getRootPane().getActionMap().put( "enterB", new
-	// AbstractAction("action"));
-
-	// this.addKeyListener( this );
-	// getRootPane().addKeyListener( this );
 	fileOpened = false;
 
     }
@@ -189,19 +172,18 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 		directory = newFolder;
 		c = new Consolidator(f);
 		this.remove(tabs);
-		tabs = new AIBatTabs(c);
+		tabs = new AIBatTabbedPane(c);
 		this.add(tabs);
 		this.invalidate();
 		this.validate();
 		fileOpened = true;
-		if (tabs.getTabCount() == AIBatTabs.numOverall)
+		if (tabs.getTabCount() == AIBatTabbedPane.NUM_OVERALL)
 		    Util.errorMessage("No .osu files found.", this);
 		this.setTitle(version + " - " + Util.cutPath(newFolder));
 		tabs.requestFocusInWindow();
 	    }
 	    else
 		Util.errorMessage("Folder not found.", this);
-	    System.out.println(newFolder);// TODO remove
 	    Util.logTime(start);
 	}
 	catch (Exception e) {
@@ -217,11 +199,6 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	return fileOpened;
     }
 
-    // public Consolidator getC()
-    // {
-    // return c;
-    // }
-
     public void copyAllWarningsToClipboard() {
 	if (fileOpened)
 	    tabs.copyAllWarningsToClipboard();
@@ -229,7 +206,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	    Util.errorMessage("Please load a folder first.", this);
     }
 
-    // TODO integrate export ...?
+    // TODO integrate export (what did I mean)?
     public void ex() {
 	if (fileOpened)
 	    tabs.exportHitsound();
@@ -237,7 +214,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	    Util.errorMessage("Please load a folder first.", this);
     }
 
-    // TODO integrate search ...?
+    // TODO integrate search (what did I mean)?
     public void search() {
 	searcher = new Searcher2(this);
 	if (searcher.getSongFolderLoc().length() > 0) {

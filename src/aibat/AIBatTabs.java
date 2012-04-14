@@ -17,6 +17,11 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import tabs.AllTab;
+import tabs.GeneralTab;
+import tabs.SkinSBTab;
+import tabs.osuDiffTab;
+
 public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
     private ArrayList<String[][]> allWarnings;
 
@@ -53,7 +58,8 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 	    "Kiai"// 4
     };
 
-    private final static String[] osuChecks = { "Snapping",// 0
+    private final static String[] osuChecks = { 
+	    "Snapping",// 0
 	    "Breaks",// 1
 	    "Spinner Length",// 2
 	    "Spinner New Combo", // 3
@@ -66,8 +72,6 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
     private static final String TIME_REGEX = "(\\d{2}:\\d{2}:\\d{3}(?: \\(\\d+\\))?(?: - )?)";
 
     private static final String LINK_REGEX = "<A Href=\"$1\" Title=\"Click to copy\">$1</A>";
-
-    private boolean popupDisabled = false;
 
     private Consolidator c;
 
@@ -82,13 +86,14 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 	c = con;
 	allWarnings = new ArrayList<String[][]>();
 	allDiffNames = new ArrayList<String>();
-	addTab("General", generalPanel(c));
-	addTab("Skin/SB", skinSBPanel(c.getSkinSBChecker()));
-	addTab("All .osu Files", allPanel(c));
+	addTab("General", new GeneralTab(c));
+	addTab("Skin/SB", new SkinSBTab(c.getSkinSBChecker()));
+	addTab("All .osu Files", new AllTab(c));
 	for (OsuFileParser o : c.getOsuFiles()) {
 	    OsuFileChecker ofc = o.getOsuFileChecker();
+	    //TODO ofc should not be a member of ofp, but rather seperately passed one.
 	    allDiffNames.add(o.getDiff());
-	    addTab(o.getDiff(), osuPanel(ofc));
+	    addTab(o.getDiff(), new osuDiffTab(ofc));
 	}
 
     }
@@ -110,10 +115,15 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 
     private JPanel skinSBPanel(SkinSBChecker s) {
 	// @formatter:off
-	String[] results = { s.getMissingSkin(), s.getSkinProblems(),
-
-	s.checkMultipleOsb(), s.checkUnusedImages(), s.checkCodelessElements(),
-		s.checkMissingElements(), s.checkPNG(), s.suggestEpilepsy(), };
+	String[] results = { 
+		s.getMissingSkin(),
+		s.getSkinProblems(),
+		s.checkMultipleOsb(), 
+		s.checkUnusedImages(), 
+		s.checkCodelessElements(),
+		s.checkMissingElements(), 
+		s.checkPNG(), 
+		s.suggestEpilepsy(), };
 	// @formatter:on
 
 	String[][] warn = { skinSBChecks, results };
@@ -125,13 +135,17 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
     // Panel for consistency in all .osu files
     private JPanel allPanel(Consolidator c) {
 	// @formatter:off
-	String[] results = { c.checkGenMeta(), c.getRedPointsCheck(),
-		c.getColoursCheck(), c.checkTags(), c.getKiaiCheck(), };
+	String[] results = { 
+		c.checkGenMeta(), 
+		c.getRedPointsCheck(),
+		c.getColoursCheck(), 
+		c.checkTags(), 
+		c.getKiaiCheck(), };
 	// @formatter:on
 
 	String[][] warn = { allChecks, results };
 	allWarnings.add(warn);
-	return panelWithHTMLText(warningMessage(warn));// TODO
+	return panelWithHTMLText(warningMessage(warn));
     }
 
     // Panel for each .osu file
@@ -165,8 +179,7 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 	    // Check to see if warning is null (didn't initialize fully), empty
 	    // (no warning).
 	    if (warn[1][i] == null)
-		Util.errorMessage("Failed to properly initialize "
-			+ warn[0][i]);
+		Util.errorMessage("Failed to properly initialize " + warn[0][i]);
 	    else if (warn[1][i].length() > 0) {
 		toShow.append(warn[1][i]);
 	    }
@@ -177,18 +190,18 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 
     public void hyperlinkUpdate(HyperlinkEvent e) {
 	if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
-//	    Object[] o = { "OK", "Don't show this popup again" };
+	    // Object[] o = { "OK", "Don't show this popup again" };
 	    Util.copyStringToClipboard(e.getDescription());
-	    //new Notification(e.getDescription(), this.getTopLevelAncestor());
-//	    if (!popupDisabled) {
-//		int n = JOptionPane.showOptionDialog(this,
-//			"Successfully copied to clipboard.", "Copied",
-//			JOptionPane.YES_NO_OPTION,
-//			JOptionPane.INFORMATION_MESSAGE, null, o, // the titles
-//								  // of buttons
-//			o[0]); // default button title
-//		popupDisabled = n == JOptionPane.NO_OPTION;
-//	    }
+	    // new Notification(e.getDescription(), this.getTopLevelAncestor());
+	    // if (!popupDisabled) {
+	    // int n = JOptionPane.showOptionDialog(this,
+	    // "Successfully copied to clipboard.", "Copied",
+	    // JOptionPane.YES_NO_OPTION,
+	    // JOptionPane.INFORMATION_MESSAGE, null, o, // the titles
+	    // // of buttons
+	    // o[0]); // default button title
+	    // popupDisabled = n == JOptionPane.NO_OPTION;
+	    // }
 	}
     }
 
@@ -276,8 +289,8 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 	    result += "\n";
 	    result += warning + "\n";
 	}
-	result = "[box=AIBat Warnings]These warnings were generated by "
-		+ "[url=http://osu.ppy.sh/forum/viewtopic.php?f=2&t=55305]"
+	result = "[box=Warnings]These warnings were generated by "
+		+ "[url=http://osu.ppy.sh/forum/t/55305]"
 		+ AIBatWindow.version
 		+ "[/url], based on the current ranking guidelines and rules."
 		+ " Some things (like breaks and spinners) can be ignored,"
@@ -301,10 +314,12 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
     }
 
     public void copyAllWarningsToClipboard() {
-	Util.copyStringToClipboard(getAllWarnings(), "Copied all warnings to the clipboard", this.getTopLevelAncestor());
-//	JOptionPane.showMessageDialog(null,
-//		"Successfully copied to clipboard.", "Copied",
-//		JOptionPane.INFORMATION_MESSAGE);
+	Util.copyStringToClipboard(getAllWarnings(),
+		"Copied all warnings to the clipboard",
+		this.getTopLevelAncestor());
+	// JOptionPane.showMessageDialog(null,
+	// "Successfully copied to clipboard.", "Copied",
+	// JOptionPane.INFORMATION_MESSAGE);
     }
 
     // TODO integrate as another tab?

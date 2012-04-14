@@ -29,6 +29,7 @@ import org.tritonus.share.sampled.TAudioFormat;
 import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 public final class Util {
+
     // For optimization testing purposes. Time should have been
     // System.currentTimeMilliseconds()
     public static void logTime(long time) {
@@ -177,12 +178,13 @@ public final class Util {
     }
 
     // Customized message will be aligned to Frame's bottom right.
+ // TODO include 
     public static void copyStringToClipboard(String toCopy, String message,
 	    Component toAlign) {
-
+	toCopy = "[quote=\"" + AIBatWindow.version + "\"]" + toCopy + "[/quote]";
+	
 	Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 	clipboard.setContents(new StringSelection(toCopy), null);
-	// new Notification(message);
 	new Notification(message, toAlign);
     }
 
@@ -190,12 +192,15 @@ public final class Util {
     public static void copyStringToClipboard(String toCopy, Component toAlign) {
 	copyStringToClipboard(toCopy, copyMessage(toCopy), toAlign);
     }
-    
+
     // Helper
     private static String copyMessage(String s) {
 	return "Copied: \""
-		+ (s.length() < 20 ? s : s.substring(0, 20) + "...") + "\"";
+		+ (s.length() <= COPY_CUT ? s : s.substring(0, COPY_CUT)
+			+ "...") + "\"";
     }
+    
+    private static final int COPY_CUT = 50;
 
     // Formatted copy message @ mouse position
     public static void copyStringToClipboard(String toCopy) {
@@ -323,7 +328,6 @@ public final class Util {
     //
     // }
 
-
     public static void errorMessage(String text, AIBatWindow window) {
 	JOptionPane.showMessageDialog(window, text, "Error",
 		JOptionPane.ERROR_MESSAGE);
@@ -362,10 +366,11 @@ public final class Util {
     }
 
     // Test
-//    public static void main(String args[])
-//	    throws UnsupportedAudioFileException, IOException {
-//	String testFile = "C:\\Users\\Akrolsmir\\Desktop\\Gaming Programs\\osu!\\Songs\\32318 DEEN - Eien no Ashita\\101 Eternal Tomorrow (Tales of Hearts Version).mp3";
-//	System.out.println(Util.getBitrate(new File(testFile)));
-//    }
+    // public static void main(String args[])
+    // throws UnsupportedAudioFileException, IOException {
+    // String testFile =
+    // "C:\\Users\\Akrolsmir\\Desktop\\Gaming Programs\\osu!\\Songs\\32318 DEEN - Eien no Ashita\\101 Eternal Tomorrow (Tales of Hearts Version).mp3";
+    // System.out.println(Util.getBitrate(new File(testFile)));
+    // }
 
 }

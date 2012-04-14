@@ -50,7 +50,6 @@ public class Consolidator {
 	// imageFiles = new HashSet<File>();
 	for (File file : Util.getFiles(dir)) {
 	    String ext = Util.getExtension(file);
-	    // This takes the most time...
 	    if (ext.equals("osu")) {
 		osuFiles.add(file);
 		osuFileParsers.add(new OsuFileParser(file));

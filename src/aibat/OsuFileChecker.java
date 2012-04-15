@@ -312,7 +312,7 @@ public class OsuFileChecker
     {
         if ( Double.parseDouble( ofp.getPreview() ) < 0 )
         {
-            return "A preview point has not yet been set for this difficulty.";
+            return "A preview point has not yet been set for this difficulty.\n";
         }
         return "";
     }

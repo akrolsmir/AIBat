@@ -1,17 +1,29 @@
 package tabs;
 
-public class GeneralTab extends AbstractTab
-{
-    //private String TITLES;
-    private String[] TITLES = {
-        "Folder Size",//0
-        "MP3 Bitrate",//1
-        "Background",//2 (Has BG + background size)
-        "Custom Hitsounds",//3 File size > 44
-    };
-    
-    GeneralTab()
-    {
-        TITLES.clone();
+import aibat.Consolidator;
+
+public class GeneralTab extends AIBatTab {
+
+    private Consolidator c;
+
+    public GeneralTab(Consolidator c) {
+	// SO KLUDGY... WHY MUST SUPER BE FIRST?
+	super();
+	this.c = c;
+	fillAllContent();
+	showText(allContentToString(FORMAT_TO_HTML));
+    }
+
+    @Override
+    protected void fillAllContent() {
+	allContent.put("Folder Size", c.checkFolderSize());
+	allContent.put("MP3 Bitrate", c.checkBitrate());
+	allContent.put("Background", c.getSkinSBChecker().checkBG());
+	allContent.put("Custom Hitsounds", c.checkCustomHitsounds());
+    }
+
+    @Override
+    public String getTabName() {
+	return "General";
     }
 }

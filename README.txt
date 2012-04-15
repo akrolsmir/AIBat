@@ -6,6 +6,13 @@ Enjoy!
 
 Changelog:
 
+Version 2.0
+- UI Updates:
+	- Windows look and feel
+	- Text cursor
+- Implementation of ModTrace, a mod tracking system
+- Code cleanup (AIBatTabs)
+
 Version 1.1- 3/27/12
 - Check for preview point not set (credit: Garven)
 - Updated SkinSpecs as per FAQ (credit: Gens)

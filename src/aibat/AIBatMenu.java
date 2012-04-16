@@ -175,11 +175,7 @@ public class AIBatMenu extends JMenuBar
             JMenuItem m = (JMenuItem)e.getSource();
             if ( m == openItem )
             {
-                String s = window.chooseDirectory( "Open" );
-                if ( s != null )
-                {
-                    window.switchTo( s );
-                }
+                window.openFolder();
             }
             else if ( m == expClipItem )
             {
@@ -195,8 +191,7 @@ public class AIBatMenu extends JMenuBar
             }
             else if ( m == refreshItem )
             {
-                if ( window.isFileOpened() )
-                    window.switchTo( window.getDirectory() );
+                window.refreshCurrentFolder();
             }
             else if ( m == displayItem )
             {

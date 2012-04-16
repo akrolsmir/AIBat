@@ -9,7 +9,7 @@ Changelog:
 Version 2.0
 - UI Updates:
 	- Windows look and feel
-	- Text cursor
+	- Toolbar added (icons courtesy of http://www.famfamfam.com/lab/icons/silk/) 2.5
 - Implementation of ModTrace, a mod tracking system
 - Code cleanup (AIBatTabs)
 

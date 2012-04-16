@@ -3,6 +3,7 @@ package aibat;
 // import java.util.*;
 // import java.io.*;
 
+import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -22,6 +23,7 @@ import javax.swing.UIManager;
 
 import tabs.AIBatTabbedPane;
 
+//TODO shouldn't inherit Action/Key listener
 public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
     public final static String version = "AIBat v2.0";
 
@@ -29,6 +31,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
     private String directory, songFolderLoc;
     private boolean fileOpened;
     private AIBatTabbedPane tabs;
+    private JPanel panel;
     private Consolidator c;
     private Searcher2 searcher;
 
@@ -45,12 +48,18 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	    // Util.errorSettings();
 	    // Skipped because search() will catch it
 	}
-	setJMenuBar(new AIBatMenu(this));
+	AIBatMenu menu = new AIBatMenu(this);
+	setJMenuBar(menu);
+	
+	panel = new JPanel(new BorderLayout());
 
 	tabs = new AIBatTabbedPane();
 	tabs.addKeyListener(this);
 	tabs.addTab("Startup", startupPanel());
-	add(tabs);
+	
+	panel.add(new AIBatToolbar(this), BorderLayout.PAGE_START);
+	panel.add(tabs, BorderLayout.CENTER);
+	add(panel);
 
 	fileOpened = false;
 
@@ -130,7 +139,6 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	{
 	    ActionEvent fakeEvent = new ActionEvent(this, 42, "enterButton");
 	    actionPerformed(fakeEvent);
-
 	}
     }
 
@@ -171,9 +179,11 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	    if (f.exists() && f.isDirectory()) {
 		directory = newFolder;
 		c = new Consolidator(f);
-		this.remove(tabs);
+		//this.remove(panel);
+		panel.remove(tabs);
 		tabs = new AIBatTabbedPane(c);
-		this.add(tabs);
+		panel.add(tabs, BorderLayout.CENTER);
+		//this.add(panel);
 		this.invalidate();
 		this.validate();
 		fileOpened = true;
@@ -191,6 +201,11 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	}
     }
 
+    private void drawPanel() {
+	// TODO Auto-generated method stub
+	
+    }
+
     public String getDirectory() {
 	return directory;
     }
@@ -204,6 +219,20 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	    tabs.copyAllWarningsToClipboard();
 	else
 	    Util.errorMessage("Please load a folder first.", this);
+    }
+    
+    public void refreshCurrentFolder()
+    {
+        if ( isFileOpened() )
+            switchTo( getDirectory() );
+    }
+    
+    public void openFolder() {
+	String s = chooseDirectory( "Open" );
+        if ( s != null )
+        {
+            switchTo( s );
+        }
     }
 
     // TODO integrate export (what did I mean)?
@@ -222,6 +251,11 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	    tabs.setSelectedIndex(0);
 	    searcher.focus();
 	}
+    }
+    
+    public void search(String toSearch){
+	search();
+	searcher.searchText(toSearch);
     }
 
     public Searcher2 getSearcher() {

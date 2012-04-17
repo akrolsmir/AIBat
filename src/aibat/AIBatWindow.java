@@ -176,14 +176,13 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 		return;
 	    }
 	    File f = new File(newFolder);
+	    //TODO thread properly, have loading screen
 	    if (f.exists() && f.isDirectory()) {
 		directory = newFolder;
 		c = new Consolidator(f);
-		//this.remove(panel);
 		panel.remove(tabs);
 		tabs = new AIBatTabbedPane(c);
 		panel.add(tabs, BorderLayout.CENTER);
-		//this.add(panel);
 		this.invalidate();
 		this.validate();
 		fileOpened = true;
@@ -199,11 +198,6 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	catch (Exception e) {
 	    Util.errorException(e, newFolder);
 	}
-    }
-
-    private void drawPanel() {
-	// TODO Auto-generated method stub
-	
     }
 
     public String getDirectory() {

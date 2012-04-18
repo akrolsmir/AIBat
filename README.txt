@@ -6,14 +6,14 @@ Enjoy!
 
 Changelog:
 
-Version 2.0
+Version 2.0- 4/17/12
 - UI Updates:
 	- Windows look and feel
-	- Toolbar added (icons courtesy of http://www.famfamfam.com/lab/icons/silk/) 2.5/1 //TODO add Display Folder
+	- Changed copy notification to be less intrusive
+	- Toolbar added (icons courtesy of http://www.famfamfam.com/lab/icons/silk/)
 	- Code cleanup (AIBatTabs), redone tab interface
-- Automatically checks for updates 2.5/1
-- Implementation of ModTrace, a mod tracking system
-
+- Output text matches new forum formatting
+- Automatically checks for updates
 
 Version 1.1- 3/27/12
 - Check for preview point not set (credit: Garven)
@@ -92,35 +92,27 @@ Version 0.1b - 6/18/11
 ********************
 
 Priorities:
-*- clean up AIBatTabs, seperate into different tabs, array in the relevant classes.
-*- tooltip instead of popup on click
+*- modtrace
 *- output difficulty values (Breeze)
+*- use AttributeConsolidator, standardize .osu files on click.
 - improve settings, autogenerate settings
 - Settings menu- Permanently disable popup, hide unused warnings
-- Update the output to match 
-- Search button in panel
+- Search button in Searcher2
 - reduce cross-dependency from dialogs
-
-
-
-To do:
+- check if audioleadin total less than 2 secs
 - Ask peppy for HitObject for slider's endposition;
 	- Add option to show all distance spacings (from OsuDistanceChecker).
-- Check for circle size between 3-7
-- check if audioleadin total less than 2 secs
+
+To do:
 - Order tabs by number of hitobjects
 - Add option to close individual tabs
 - Add option to save all warnings as txt.
-- Add Label, reSearch and Enter options in Searcher.
 - Encourage compatibility with system.newline and character separator
-- Standardize .osu files on click.
+
 
 Implement many more checks:
-- MP3 bitrate
-- # diffs < 6?
 - warning for white color + kiai
 - warning for same color
-- All hitsounds must be > 42 bytes
 - More than 3 slider velocities
 
 Storyboarding:

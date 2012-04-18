@@ -11,8 +11,8 @@ import aibat.Util;
 
 public class Updater implements Runnable {
 
-    private final static String LATEST_VERSION_INFO_LOC = "https://raw.github.com/akrolsmir/AIBat/updater/src/updater/LatestVersionInfo";
-    //TODO private final static String LATEST_VERSION_INFO_LOC = "https://raw.github.com/akrolsmir/AIBat/master/src/updater/LatestVersionInfo";
+    //private final static String LATEST_VERSION_INFO_LOC = "https://raw.github.com/akrolsmir/AIBat/updater/src/updater/LatestVersionInfo";
+    private final static String LATEST_VERSION_INFO_LOC = "https://raw.github.com/akrolsmir/AIBat/master/src/updater/LatestVersionInfo";
     private String latestVersion, downloadLink;
     
     public Updater() {

@@ -64,7 +64,7 @@ public class AIBatMenu extends JMenuBar
             ActionEvent.CTRL_MASK ) );
         exploreItem = new JMenuItem( "Explore Selected Folder", 'E' );
         exploreItem.addActionListener( fileAction );
-        exploreItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_D,
+        exploreItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_E,
             ActionEvent.CTRL_MASK ) );
         refreshItem = new JMenuItem( "Refresh Selected Folder", 'R' );
         refreshItem.addActionListener( fileAction );

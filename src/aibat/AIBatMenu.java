@@ -17,7 +17,7 @@ import javax.swing.KeyStroke;
 public class AIBatMenu extends JMenuBar
 {
     private JMenuItem openItem, exitItem, helpItem, aboutItem, expClipItem,
-                    displayItem, expHitsoundItem, changelogItem, searchItem,
+                    exploreItem, expHitsoundItem, changelogItem, searchItem,
                     settingsTextItem, refreshItem,
 
                     songFolderItem, addBmItem, removeBmItem, bmThisItem;
@@ -62,9 +62,9 @@ public class AIBatMenu extends JMenuBar
         openItem.addActionListener( fileAction );
         openItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_O,
             ActionEvent.CTRL_MASK ) );
-        displayItem = new JMenuItem( "Display Selected Folder", 'D' );
-        displayItem.addActionListener( fileAction );
-        displayItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_D,
+        exploreItem = new JMenuItem( "Explore Selected Folder", 'E' );
+        exploreItem.addActionListener( fileAction );
+        exploreItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_D,
             ActionEvent.CTRL_MASK ) );
         refreshItem = new JMenuItem( "Refresh Selected Folder", 'R' );
         refreshItem.addActionListener( fileAction );
@@ -84,7 +84,7 @@ public class AIBatMenu extends JMenuBar
         // exportMenu.add( expClipItem );
 
         fileMenu.add( openItem );
-        fileMenu.add( displayItem );
+        fileMenu.add( exploreItem );
         fileMenu.add( refreshItem );
         // fileMenu.add( songFolderItem );
         // fileMenu.add( exportMenu );
@@ -183,7 +183,7 @@ public class AIBatMenu extends JMenuBar
             }
             else if ( m == expHitsoundItem )
             {
-                window.ex();
+                window.exportHitsounds();
             }
             else if ( m == exitItem )
             {
@@ -193,16 +193,9 @@ public class AIBatMenu extends JMenuBar
             {
                 window.refreshCurrentFolder();
             }
-            else if ( m == displayItem )
+            else if ( m == exploreItem )
             {
-                try
-                {
-                    Util.openFolder( window.getDirectory() );
-                }
-                catch ( Exception e1 )
-                {
-                    e1.printStackTrace();
-                }
+                window.explore();
             }
         }
 

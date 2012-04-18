@@ -51,13 +51,13 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	}
 	AIBatMenu menu = new AIBatMenu(this);
 	setJMenuBar(menu);
-	
+
 	panel = new JPanel(new BorderLayout());
 
 	tabs = new AIBatTabbedPane();
 	tabs.addKeyListener(this);
 	tabs.addTab("Startup", startupPanel());
-	
+
 	panel.add(new AIBatToolbar(this), BorderLayout.PAGE_START);
 	panel.add(tabs, BorderLayout.CENTER);
 	add(panel);
@@ -179,7 +179,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 		return;
 	    }
 	    File f = new File(newFolder);
-	    //TODO thread properly, have loading screen
+	    // TODO thread properly, have loading screen
 	    if (f.exists() && f.isDirectory()) {
 		directory = newFolder;
 		c = new Consolidator(f);
@@ -217,23 +217,21 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	else
 	    Util.errorMessage("Please load a folder first.", this);
     }
-    
-    public void refreshCurrentFolder()
-    {
-        if ( isFileOpened() )
-            switchTo( getDirectory() );
+
+    public void refreshCurrentFolder() {
+	if (isFileOpened())
+	    switchTo(getDirectory());
     }
-    
+
     public void openFolder() {
-	String s = chooseDirectory( "Open" );
-        if ( s != null )
-        {
-            switchTo( s );
-        }
+	String s = chooseDirectory("Open");
+	if (s != null) {
+	    switchTo(s);
+	}
     }
 
     // TODO integrate export (what did I mean)?
-    public void ex() {
+    public void exportHitsounds() {
 	if (fileOpened)
 	    tabs.exportHitsound();
 	else
@@ -249,14 +247,24 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	    searcher.focus();
 	}
     }
-    
-    public void search(String toSearch){
+
+    public void search(String toSearch) {
 	search();
 	searcher.searchText(toSearch);
     }
 
     public Searcher2 getSearcher() {
 	return searcher;
+    }
+
+    public void explore() {
+	try {
+	    Util.openFolder(getDirectory());
+	}
+	catch (Exception e1) {
+	    Util.errorException(e1);
+	}
+
     }
 
 }

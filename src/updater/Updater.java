@@ -1,6 +1,5 @@
 package updater;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -13,9 +12,7 @@ import aibat.Util;
 public class Updater implements Runnable {
 
     private final static String LATEST_VERSION_INFO_LOC = "https://raw.github.com/akrolsmir/AIBat/updater/src/updater/LatestVersionInfo";
-    // private final static String NEW_DOWNLOAD_LINK_LOC =
-    // "https://raw.github.com/akrolsmir/AIBat/master/src/aibat/AIBatWindow.java";
-    //private final static String CUR_LINK = "http://puu.sh/mK97";
+    //TODO private final static String LATEST_VERSION_INFO_LOC = "https://raw.github.com/akrolsmir/AIBat/master/src/updater/LatestVersionInfo";
     private String latestVersion, downloadLink;
     
     public Updater() {

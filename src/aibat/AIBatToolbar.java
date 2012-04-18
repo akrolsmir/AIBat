@@ -27,10 +27,9 @@ public class AIBatToolbar extends JToolBar {
 	// setFloatable(false);
 	// setRollover(true);
 
-	//TODO load seperately
-	//TODO credit famfamfam
+	//TODO load separately (what? why?)
 	JButton openButton = new JButton("Open", createImageIcon(
-		"folder_explore.png", ""));
+		"../icons/folder_explore.png", ""));
 	openButton.addActionListener(new ActionListener() {
 
 	    @Override
@@ -41,7 +40,7 @@ public class AIBatToolbar extends JToolBar {
 	add(openButton);
 
 	JButton refreshButton = new JButton("Refresh", createImageIcon(
-		"arrow_refresh.png", ""));
+		"../icons/arrow_refresh.png", ""));
 	add(refreshButton);
 	refreshButton.addActionListener(new ActionListener() {
 
@@ -52,7 +51,7 @@ public class AIBatToolbar extends JToolBar {
 	});
 
 	JButton copyButton = new JButton("Copy", createImageIcon(
-		"page_copy.png", ""));
+		"../icons/page_copy.png", ""));
 	add(copyButton);
 	copyButton.addActionListener(new ActionListener() {
 
@@ -61,11 +60,21 @@ public class AIBatToolbar extends JToolBar {
 		window.copyAllWarningsToClipboard();
 	    }
 	});
+	
+	JButton exploreButton = new JButton("Explore", createImageIcon("../icons/folder_go.png", ""));
+	add(exploreButton);
+	exploreButton.addActionListener(new ActionListener() {
+	    
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		window.explore();
+	    }
+	});
 
 	// addSeparator();
 	addSeparator(new Dimension(15, 0));
 
-	add(new JLabel(createImageIcon("magnifier.png", "wtf?")));
+	add(new JLabel(createImageIcon("../icons/magnifier.png", "")));
 
 	searchField = new JTextField("Search...");
 	searchField.setColumns(5);

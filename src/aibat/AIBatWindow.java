@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import tabs.AIBatTabbedPane;
+import updater.Updater;
 
 //TODO shouldn't inherit Action/Key listener
 public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
@@ -122,6 +123,8 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	window.search();
 	window.setVisible(true);
 	window.getSearcher().focus();
+	Util.logTime(start);
+	new Thread(new Updater());
 	Util.logTime(start);
     }
 

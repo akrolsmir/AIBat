@@ -9,9 +9,11 @@ Changelog:
 Version 2.0
 - UI Updates:
 	- Windows look and feel
-	- Toolbar added (icons courtesy of http://www.famfamfam.com/lab/icons/silk/) 2.5
+	- Toolbar added (icons courtesy of http://www.famfamfam.com/lab/icons/silk/) 2.5/1 //TODO add Display Folder
+	- Code cleanup (AIBatTabs), redone tab interface
+- Automatically checks for updates 2.5/1
 - Implementation of ModTrace, a mod tracking system
-- Code cleanup (AIBatTabs)
+
 
 Version 1.1- 3/27/12
 - Check for preview point not set (credit: Garven)

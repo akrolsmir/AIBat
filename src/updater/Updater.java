@@ -22,7 +22,7 @@ public class Updater implements Runnable {
 	if (!AIBatWindow.version.equals(latestVersion)) {
 
 	    JFrame frame = new JFrame("Update Available");
-	    frame.add(new UpdateMessagePane(downloadLink));
+	    frame.add(new UpdateMessagePane(latestVersion, downloadLink));
 	    
 	    frame.pack();
 	    frame.setLocationRelativeTo(null);
@@ -59,7 +59,6 @@ public class Updater implements Runnable {
 
     @Override
     public void run() {
-	//TODO test w/o internet etc.
 	long start = System.currentTimeMillis();
 	new Updater();
 	Util.logTime(start);

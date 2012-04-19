@@ -173,14 +173,12 @@ public class Searcher2 {
 	    resultsList.setSelectedIndex(0);
 
 	    if (e != null && e.getKeyCode() == KeyEvent.VK_ENTER) {
-		System.out.println("searchAction Entered");// TODO remove
 		goToEntered();
 	    }
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-	    System.out.println("searchActionTyped Entered");// TODO remove
 	}
 
     }

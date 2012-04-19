@@ -16,10 +16,8 @@ import java.awt.SystemColor;
 public class UpdateMessagePane extends JEditorPane {
 
     private static final String LINK_FORMAT = "<a href=\"%1$s\">%1$s</a>";
-    private static final String NOTIFICATION = "There is a newer version of AIBat available.\n"
-	    + "Upgrade to get new features, optimizations, and bugfixes!\n";
 
-    public UpdateMessagePane(String newDownloadLink) {
+    public UpdateMessagePane(String latestVersion, String downloadLink) {
 
 	// Format to do HTML
 	Font font = UIManager.getFont("Label.font");
@@ -32,10 +30,13 @@ public class UpdateMessagePane extends JEditorPane {
 	setEditable(false);
 	setBackground(new Color(0xf0f0f0));
 	addHyperlinkListener(new OpenHyperlinkInBrowser());
-	setText((NOTIFICATION + "\nDirect download link: "
-		+ String.format(LINK_FORMAT, newDownloadLink)
-		+ "\nForum thread: " + String.format(LINK_FORMAT,
-		"http://osu.ppy.sh/forum/t/55305")).replaceAll("\\n", "<br />"));
+	setText(("There is a newer version of AIBat available: "
+		+ latestVersion
+		+ "\nUpgrade to get new features, optimizations, and bugfixes!\n"
+		+ "\nDirect download link: "
+		+ String.format(LINK_FORMAT, downloadLink) + "\nForum thread: " + String
+		.format(LINK_FORMAT, "http://osu.ppy.sh/forum/t/55305"))
+		.replaceAll("\\n", "<br />"));
     }
 
     private class OpenHyperlinkInBrowser implements HyperlinkListener {

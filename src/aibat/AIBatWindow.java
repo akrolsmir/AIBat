@@ -3,6 +3,7 @@ package aibat;
 // import java.util.*;
 // import java.io.*;
 
+import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -21,7 +22,9 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import tabs.AIBatTabbedPane;
+import updater.Updater;
 
+//TODO shouldn't inherit Action/Key listener
 public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
     public final static String VERSION = "AIBat v2.0";
 
@@ -29,6 +32,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
     private String directory, songFolderLoc;
     private boolean fileOpened;
     private AIBatTabbedPane tabs;
+    private JPanel panel;
     private Consolidator c;
     private Searcher2 searcher;
 
@@ -45,12 +49,18 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	    // Util.errorSettings();
 	    // Skipped because search() will catch it
 	}
-	setJMenuBar(new AIBatMenu(this));
+	AIBatMenu menu = new AIBatMenu(this);
+	setJMenuBar(menu);
+
+	panel = new JPanel(new BorderLayout());
 
 	tabs = new AIBatTabbedPane();
 	tabs.addKeyListener(this);
 	tabs.addTab("Startup", startupPanel());
-	add(tabs);
+
+	panel.add(new AIBatToolbar(this), BorderLayout.PAGE_START);
+	panel.add(tabs, BorderLayout.CENTER);
+	add(panel);
 
 	fileOpened = false;
 
@@ -114,6 +124,8 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	window.setVisible(true);
 	window.getSearcher().focus();
 	Util.logTime(start);
+	new Thread(new Updater());
+	Util.logTime(start);
     }
 
     @Override
@@ -130,7 +142,6 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	{
 	    ActionEvent fakeEvent = new ActionEvent(this, 42, "enterButton");
 	    actionPerformed(fakeEvent);
-
 	}
     }
 
@@ -168,12 +179,13 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 		return;
 	    }
 	    File f = new File(newFolder);
+	    // TODO thread properly, have loading screen
 	    if (f.exists() && f.isDirectory()) {
 		directory = newFolder;
 		c = new Consolidator(f);
-		this.remove(tabs);
+		panel.remove(tabs);
 		tabs = new AIBatTabbedPane(c);
-		this.add(tabs);
+		panel.add(tabs, BorderLayout.CENTER);
 		this.invalidate();
 		this.validate();
 		fileOpened = true;
@@ -206,8 +218,20 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	    Util.errorMessage("Please load a folder first.", this);
     }
 
+    public void refreshCurrentFolder() {
+	if (isFileOpened())
+	    switchTo(getDirectory());
+    }
+
+    public void openFolder() {
+	String s = chooseDirectory("Open");
+	if (s != null) {
+	    switchTo(s);
+	}
+    }
+
     // TODO integrate export (what did I mean)?
-    public void ex() {
+    public void exportHitsounds() {
 	if (fileOpened)
 	    tabs.exportHitsound();
 	else
@@ -224,8 +248,23 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	}
     }
 
+    public void search(String toSearch) {
+	search();
+	searcher.searchText(toSearch);
+    }
+
     public Searcher2 getSearcher() {
 	return searcher;
+    }
+
+    public void explore() {
+	try {
+	    Util.openFolder(getDirectory());
+	}
+	catch (Exception e1) {
+	    Util.errorException(e1);
+	}
+
     }
 
 }

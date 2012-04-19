@@ -49,7 +49,11 @@ public class AIBatTabbedPane extends JTabbedPane {
 	for (AIBatTab tab : allReports) {
 	    String content = tab.allContentToString(AIBatTab.FORMAT_TO_BBCODE);
 	    if (content != null && content.length() > 0)
-		result.append("[" + tab.getTabName() + "]\n" + content);
+		// TODO use if/when [notice is worth it and parsing is fixed.
+		// result.append("\n[" + tab.getTabName() + "]\n[notice]" +
+		// content
+		// + "[/notice]\n");
+		result.append("\n[" + tab.getTabName() + "]\n" + content);
 	}
 	return result.toString();
     }

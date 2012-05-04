@@ -21,6 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import modtrace.ModTrace;
+
 import tabs.AIBatTabbedPane;
 import updater.Updater;
 
@@ -193,6 +195,9 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 		    Util.errorMessage("No .osu files found.", this);
 		this.setTitle(VERSION + " - " + Util.cutPath(newFolder));
 		tabs.requestFocusInWindow();
+		
+		//TODO Start ModTrace
+		//new Thread( new ModTrace(null));
 	    }
 	    else
 		Util.errorMessage("Folder not found.", this);

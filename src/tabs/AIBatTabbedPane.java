@@ -34,7 +34,7 @@ public class AIBatTabbedPane extends JTabbedPane {
 	allReports.add(new GeneralTab(c));
 	allReports.add(new SkinSBTab(c.getSkinSBChecker()));
 	allReports.add(new AllTab(c));
-	for (OsuFileParser ofp : c.getOsuFiles()) {
+	for (OsuFileParser ofp : c.getOsuFileParsers()) {
 	    allReports.add(new osuDiffTab(ofp));
 	}
 	// TODO ofc should not be a member of ofp, but rather separate?
@@ -51,8 +51,7 @@ public class AIBatTabbedPane extends JTabbedPane {
 	    if (content != null && content.length() > 0)
 		// TODO use if/when [notice is worth it and parsing is fixed.
 		// result.append("\n[" + tab.getTabName() + "]\n[notice]" +
-		// content
-		// + "[/notice]\n");
+		// content + "[/notice]\n");
 		result.append("\n[" + tab.getTabName() + "]\n" + content);
 	}
 	return result.toString();

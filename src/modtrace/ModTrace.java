@@ -13,17 +13,21 @@ public class ModTrace {
 
     public final static String VERSION = "ModTrace v0.1b";
 
-    private List<File> osuFiles;
-    private Map<File, OsuFileParser> parsedOrigFiles;
+    // private List<File> osuFiles;
+
+    // Maps the original file, parsed, to the corresponding new version
+    private Map<OsuFileParser, File> parsedOrigFiles;
 
     public ModTrace(List<File> osuFiles) {
-	this.osuFiles = osuFiles;
+	// this.osuFiles = osuFiles;
 
 	if (!startModTrace())
 	    return;
 
 	OsuFilesCopier ofc = new OsuFilesCopier(osuFiles);
 	parsedOrigFiles = ofc.getParsedOrigFiles();
+	
+	//new ModTraceTab
     }
 
     // Asks if the user wants to start ModTrace
@@ -37,9 +41,10 @@ public class ModTrace {
     }
 
     private void compareAll() {
-	for (Map.Entry<File, OsuFileParser> entry : parsedOrigFiles.entrySet()) {
-	    DiffComparator d = new DiffComparator(new OsuFileParser(
-		    entry.getKey()), entry.getValue());
+	for (Map.Entry<OsuFileParser, File> entry : parsedOrigFiles.entrySet()) {
+	    DiffComparator d = new DiffComparator(entry.getKey(),
+		    new OsuFileParser(entry.getValue()));
+	    d.compare();
 	}
     }
 

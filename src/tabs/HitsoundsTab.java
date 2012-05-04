@@ -23,7 +23,7 @@ public class HitsoundsTab extends AIBatTab {
     @Override
     protected void fillAllContent() {
 	allContent.put("Explanation", EXPLANATION);
-	for (OsuFileParser o : c.getOsuFiles()) {
+	for (OsuFileParser o : c.getOsuFileParsers()) {
 	    //toShow.append("<B><U>" + o.getDiffBoxed() + "</U></B>\n");
 	    StringBuilder toShow = new StringBuilder();
 	    OsuFileChecker ofc = o.getOsuFileChecker();

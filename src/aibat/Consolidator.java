@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.AudioFileFormat;
@@ -26,11 +27,11 @@ public class Consolidator {
 
     private static final long MIN_SAFE_WAV = 44;
 
-    private ArrayList<File> osuFiles = new ArrayList<File>(),
+    private List<File> osuFiles = new ArrayList<File>(),
 	    soundFiles = new ArrayList<File>(),
 	    osbFiles = new ArrayList<File>();
 
-    private ArrayList<OsuFileParser> osuFileParsers = new ArrayList<OsuFileParser>();;
+    private List<OsuFileParser> osuFileParsers = new ArrayList<OsuFileParser>();;
 
     private HashSet<File> musicFiles = new HashSet<File>();; // TODO figure out
 							     // what the heck
@@ -272,9 +273,11 @@ public class Consolidator {
     // return result;
     // }
 
-    public ArrayList<OsuFileParser> getOsuFiles() {
+    public List<OsuFileParser> getOsuFileParsers() {
 	return osuFileParsers;
     }
+    
+    //public 
 
     public SkinSBChecker getSkinSBChecker() {
 	return skinSBChecker;

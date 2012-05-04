@@ -19,7 +19,7 @@ public class Updater implements Runnable {
 	getInfo(LATEST_VERSION_INFO_LOC);
 	if (latestVersion == null)
 	    return;
-	if (!AIBatWindow.version.equals(latestVersion)) {
+	if (!AIBatWindow.VERSION.equals(latestVersion)) {
 
 	    JFrame frame = new JFrame("Update Available");
 	    frame.add(new UpdateMessagePane(latestVersion, downloadLink));

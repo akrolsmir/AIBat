@@ -84,7 +84,7 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 	addTab("General", generalPanel(c));
 	addTab("Skin/SB", skinSBPanel(c.getSkinSBChecker()));
 	addTab("All .osu Files", allPanel(c));
-	for (OsuFileParser o : c.getOsuFiles()) {
+	for (OsuFileParser o : c.getOsuFileParsers()) {
 	    OsuFileChecker ofc = o.getOsuFileChecker();
 	    allDiffNames.add(o.getDiff());
 	    addTab(o.getDiff(), osuPanel(ofc));
@@ -310,7 +310,7 @@ public class AIBatTabs extends JTabbedPane implements HyperlinkListener {
 	toShow.append("The following shows the locations of all objects with the specified hitsound, exported into a format for\n"
 		+ "Bookmarks in the .osu file. Click to copy the entire line to the clipboard, and paste into the appropriate line\n"
 		+ "(directly below \"[Editor]\") in the .osu file.\n");
-	for (OsuFileParser o : c.getOsuFiles()) {
+	for (OsuFileParser o : c.getOsuFileParsers()) {
 	    toShow.append("<B><U>" + o.getDiffBoxed() + "</U></B>\n");
 	    OsuFileChecker ofc = o.getOsuFileChecker();
 	    ofc.processHitsoundBookmark();

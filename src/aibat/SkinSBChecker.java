@@ -27,9 +27,9 @@ public class SkinSBChecker {
 
     private File dir;
 
-    private ArrayList<OsuFileParser> osuFileParsers;
+    private List<OsuFileParser> osuFileParsers;
 
-    private ArrayList<File> osbFiles;
+    private List<File> osbFiles;
 
     private Map<String, BufferedImage> imageFiles;
 
@@ -56,11 +56,11 @@ public class SkinSBChecker {
     private boolean hasEpilepsyWarning;
 
     public SkinSBChecker(File directory,
-	    ArrayList<OsuFileParser> osuFileParsers,
-	    ArrayList<File> inputOsbFiles, boolean epilepsyWarningFound) {
+	    List<OsuFileParser> osuFileParsers2,
+	    List<File> osbFiles2, boolean epilepsyWarningFound) {
 	dir = directory;
-	this.osuFileParsers = osuFileParsers;
-	osbFiles = inputOsbFiles;
+	this.osuFileParsers = osuFileParsers2;
+	osbFiles = osbFiles2;
 	hasEpilepsyWarning = epilepsyWarningFound;
 
 	path = dir.getAbsolutePath().toLowerCase() + "\\";

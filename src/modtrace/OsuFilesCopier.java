@@ -16,7 +16,7 @@ public class OsuFilesCopier {
     public final static String ORIG_SUBDIR = "origFiles\\";
 
     private List<File> osuFiles;
-    private Map<File, OsuFileParser> parsedOrigFiles = new TreeMap<File, OsuFileParser>();
+    private Map<OsuFileParser, File> parsedOrigFiles = new TreeMap<OsuFileParser, File>();
 
     // Preference about overwriting;
     private enum OP {
@@ -25,13 +25,13 @@ public class OsuFilesCopier {
 
     private OP overwritePreference = OP.NO_PREFERENCE;
 
-    // Copies each osu file to the local folder
+    // Copies each osu file to the a .osu.orig in ORIG_SUBDIR
     public OsuFilesCopier(List<File> osuFiles) {
 	this.osuFiles = osuFiles;
 	for (File srcFile : this.osuFiles) {
 
 	    File destFile = new File(ORIG_SUBDIR + srcFile.getName() + ".orig");
-	    parsedOrigFiles.put(srcFile, new OsuFileParser(destFile));
+	    parsedOrigFiles.put(new OsuFileParser(destFile), srcFile);
 
 	    overwritePreference: switch (overwritePreference) {
 	    case NONE:
@@ -81,7 +81,7 @@ public class OsuFilesCopier {
 	}
     }
 
-    public Map<File, OsuFileParser> getParsedOrigFiles() {
+    public Map<OsuFileParser, File> getParsedOrigFiles() {
 	return parsedOrigFiles;
     }
 }

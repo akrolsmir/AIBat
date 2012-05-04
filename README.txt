@@ -93,6 +93,7 @@ Version 0.1b - 6/18/11
 
 Priorities:
 *- modtrace
+*- allow jpg as well as png files
 *- output difficulty values (Breeze)
 *- use AttributeConsolidator, standardize .osu files on click.
 - improve settings, autogenerate settings

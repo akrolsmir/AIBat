@@ -12,7 +12,7 @@ import aibat.OsuFileParser;
 import aibat.Util;
 
 public class DiffComparator {
-    // private List<Change> changes; TODO remove Change?
+    // private List<Change> changes;
     private String changes = "";
 
     private List<HitObject> init, chng;
@@ -68,7 +68,6 @@ public class DiffComparator {
 
     private void remove(HitObject h) {
 	// changes += ("Remove: " + h.toString());
-	// TODO switch based on type
 	changes += (Util.formatTime(h.getTime()) + " - " + "Remove this "
 		+ className(h) + ".\n");
     }

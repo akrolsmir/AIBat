@@ -22,7 +22,7 @@ public abstract class AIBatTab extends JPanel {
     // allContent maps section titles to their content
     protected Map<String, String> allContent = new TreeMap<String, String>();
 
-    // (?: - )?
+    // Add "(?: - )?" to include the " - " in the regex
     private static final String TIME_REGEX = "(\\d{2}:\\d{2}:\\d{3}(?: \\(\\d+\\))?)";
     private static final String LINK_REGEX = "<a href=\"$1\">$1</a>";
     public static final String FORMAT_TO_HTML = "<b><a href=\"%2$s\" style=\"font-family:georgia;font-size:16\">%1$s</a></b><br />%3$s<br />";

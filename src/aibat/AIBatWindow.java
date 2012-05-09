@@ -24,6 +24,7 @@ import javax.swing.UIManager;
 import modtrace.ModTrace;
 
 import tabs.AIBatTabbedPane;
+import tabs.HitsoundsTab;
 import updater.Updater;
 
 //TODO shouldn't inherit Action/Key listener
@@ -195,9 +196,9 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 		    Util.errorMessage("No .osu files found.", this);
 		this.setTitle(VERSION + " - " + Util.cutPath(newFolder));
 		tabs.requestFocusInWindow();
-		
-		//TODO Start ModTrace
-		//new Thread( new ModTrace(null));
+
+		// TODO Start ModTrace
+		// new Thread( new ModTrace(null));
 	    }
 	    else
 		Util.errorMessage("Folder not found.", this);
@@ -237,18 +238,21 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 
     // TODO integrate export (what did I mean)?
     public void exportHitsounds() {
-	if (fileOpened)
-	    tabs.exportHitsound();
-	else
+	if (fileOpened) {
+	    tabs.addTab("Hitsounds", new HitsoundsTab(c));
+	    tabs.focusLast();
+	}
+	else {
 	    Util.errorMessage("Please load a folder first.", this);
+	}
     }
 
     // TODO integrate search (what did I mean)?
     public void search() {
 	searcher = new Searcher2(this);
 	if (searcher.getSongFolderLoc().length() > 0) {
-	    tabs.insertTab("Search", null, searcher.searchPanel(), null, 0);
-	    tabs.setSelectedIndex(0);
+	    tabs.addTab("Search", searcher.searchPanel());
+	    tabs.focusLast();
 	    searcher.focus();
 	}
     }

@@ -92,6 +92,7 @@ Version 0.1b - 6/18/11
 ********************
 
 Priorities:
+**- Have toast show EVERYTHING, exclude quote from time-click
 *- modtrace
 *- allow jpg as well as png files
 *- output difficulty values (Breeze)

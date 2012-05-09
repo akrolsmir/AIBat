@@ -49,7 +49,7 @@ public class AIBatTabbedPane extends JTabbedPane {
 	for (AIBatTab tab : allReports) {
 	    String content = tab.allContentToString(AIBatTab.FORMAT_TO_BBCODE);
 	    if (content != null && content.length() > 0)
-		// TODO use if/when [notice is worth it and parsing is fixed.
+		// TODO use if/when [notice] is worth it and parsing is fixed.
 		// result.append("\n[" + tab.getTabName() + "]\n[notice]" +
 		// content + "[/notice]\n");
 		result.append("\n[" + tab.getTabName() + "]\n" + content);
@@ -62,10 +62,11 @@ public class AIBatTabbedPane extends JTabbedPane {
 		"Copied all warnings to the clipboard",
 		this.getTopLevelAncestor());
     }
-
-    public void exportHitsound() {
-	this.insertTab("Hitsounds", null, new HitsoundsTab(c), null, 0);
-	this.setSelectedIndex(0);
+    
+    public void focusLast()
+    {
+	this.setSelectedIndex(this.getTabCount()-1);
     }
+
 
 }

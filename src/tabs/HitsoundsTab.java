@@ -17,7 +17,7 @@ public class HitsoundsTab extends AIBatTab {
 	this.c = c;
 	fillAllContent();
 	showText(allContentToString(FORMAT_TO_PLAIN));
-	System.out.println(allContentToString(FORMAT_TO_PLAIN));
+	//System.out.println(allContentToString(FORMAT_TO_PLAIN));
     }
 
     @Override

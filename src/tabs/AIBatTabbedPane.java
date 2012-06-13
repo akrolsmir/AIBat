@@ -3,11 +3,9 @@ package tabs;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import aibat.Consolidator;
-import aibat.OsuFileChecker;
 import aibat.OsuFileParser;
 import aibat.Util;
 

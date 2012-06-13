@@ -94,14 +94,15 @@ Version 0.1b - 6/18/11
 Priorities:
 **- Have toast show EVERYTHING, exclude quote from time-click
 *- modtrace
+*- autogenerate settings
 *- allow jpg as well as png files
-*- output difficulty values (Breeze)
-*- use AttributeConsolidator, standardize .osu files on click.
-- improve settings, autogenerate settings
+*- check if audioleadin total less than 2 secs
+- output difficulty values (Breeze)
+- use AttributeConsolidator, standardize .osu files on click.
 - Settings menu- Permanently disable popup, hide unused warnings
 - Search button in Searcher2
 - reduce cross-dependency from dialogs
-- check if audioleadin total less than 2 secs
+
 - Ask peppy for HitObject for slider's endposition;
 	- Add option to show all distance spacings (from OsuDistanceChecker).
 

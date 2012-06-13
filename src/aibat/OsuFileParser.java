@@ -10,7 +10,7 @@ import obj.HitObject;
 import obj.Slider;
 import obj.Spinner;
 
-public class OsuFileParser {
+public class OsuFileParser implements Comparable<OsuFileParser> {
     private String contents;
 
     // Array of info from General and Metadata
@@ -79,12 +79,11 @@ public class OsuFileParser {
 
     // Creates hitObjects.
     private void processHitObjects() {
-	long start = System.currentTimeMillis();// TODO remove
 	Scanner sc = new Scanner(getHitObjectsString());
 	while (sc.hasNextLine()) {
 	    String line = sc.nextLine();
 	    if (line.length() > 0) {
-		//Switches based on combo
+		// Switches based on combo
 		int combo = Integer.parseInt(line.split(",")[3]);
 		switch (Integer.lowestOneBit(combo)) {
 		case 1:
@@ -114,10 +113,7 @@ public class OsuFileParser {
 	}
 	startTime = hitObjects.get(0).getTime();
 	endTime = hitObjects.get(hitObjects.size() - 1).getEndTime();
-	Util.logTime(start);// TODO remove
     }
-
-
 
     // Maps each hitobject to its notation in the format of MM:SS:mmm (#)
     private void processNotation() {
@@ -274,7 +270,12 @@ public class OsuFileParser {
 	// - Sliders are very slow = 2.3 sec
 	// timer takes about .7 secs
 	// ofc takes almost no time
-	//long start = System.currentTimeMillis();
-	//Util.logTime(start);
+	// long start = System.currentTimeMillis();
+	// Util.logTime(start);
+    }
+
+    @Override
+    public int compareTo(OsuFileParser o) {
+	return getDiff().compareTo(o.getDiff());
     }
 }

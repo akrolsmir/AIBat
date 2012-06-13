@@ -39,6 +39,8 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
     private Consolidator c;
     private Searcher2 searcher;
 
+    private Thread modTraceThread = new Thread();
+
     public AIBatWindow() {
 	super(VERSION);
 
@@ -119,10 +121,12 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 		    System.exit(0);
 	    }
 	});
+
 	// window.pack();
 	window.setSize(800, 600);
 	window.setLocationRelativeTo(null);
 
+	// TODO thread the search function?
 	window.search();
 	window.setVisible(true);
 	window.getSearcher().focus();
@@ -192,13 +196,16 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 		this.invalidate();
 		this.validate();
 		fileOpened = true;
-		if (tabs.getTabCount() == AIBatTabbedPane.NUM_OVERALL)
+		if (tabs.getTabCount() <= AIBatTabbedPane.NUM_OVERALL)
 		    Util.errorMessage("No .osu files found.", this);
 		this.setTitle(VERSION + " - " + Util.cutPath(newFolder));
 		tabs.requestFocusInWindow();
 
 		// TODO Start ModTrace
-		// new Thread( new ModTrace(null));
+		modTraceThread.interrupt();
+		modTraceThread = new Thread(new ModTrace(c.getOsuFiles(), tabs));
+		modTraceThread.start();
+
 	    }
 	    else
 		Util.errorMessage("Folder not found.", this);

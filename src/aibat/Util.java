@@ -326,8 +326,21 @@ public final class Util {
 	frame.setVisible(true);
     }
 
-    // Test
-    // public static void main(String args[])
+    public static void openHyperlinkInBrowser(String url) {
+	try {
+	    java.awt.Desktop.getDesktop().browse(
+		    java.net.URI.create(url));
+	}
+	catch (Exception e1) {
+	    Util.errorException(e1);
+	}
+    }
+
+//     Test
+//     public static void main(String args[]){
+//	 Util.openHyperlinkInBrowser("www.google.com");
+//	 Util.openHyperlinkInBrowser("https://github.com/akrolsmir/AIBat");
+//     }
     // throws UnsupportedAudioFileException, IOException {
     // String testFile =
     // "C:\\Users\\Akrolsmir\\Desktop\\Gaming Programs\\osu!\\Songs\\32318 DEEN - Eien no Ashita\\101 Eternal Tomorrow (Tales of Hearts Version).mp3";

@@ -44,14 +44,7 @@ public class UpdateMessagePane extends JEditorPane {
 	@Override
 	public void hyperlinkUpdate(HyperlinkEvent e) {
 	    if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
-		String url = e.getDescription();
-		try {
-		    java.awt.Desktop.getDesktop().browse(
-			    java.net.URI.create(url));
-		}
-		catch (Exception e1) {
-		    Util.errorException(e1);
-		}
+		Util.openHyperlinkInBrowser(e.getDescription());
 	    }
 	}
     }

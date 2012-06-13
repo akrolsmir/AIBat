@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JTabbedPane;
 
+import aibat.AIBatWindow;
 import aibat.Consolidator;
 import aibat.OsuFileParser;
 import aibat.Util;
@@ -56,15 +57,15 @@ public class AIBatTabbedPane extends JTabbedPane {
     }
 
     public void copyAllWarningsToClipboard() {
-	Util.copyStringToClipboard(getAllWarnings(),
+
+	Util.copyStringToClipboard("[quote=\"" + AIBatWindow.VERSION + "\"]"
+		+ getAllWarnings() + "[/quote]",
 		"Copied all warnings to the clipboard",
 		this.getTopLevelAncestor());
     }
-    
-    public void focusLast()
-    {
-	this.setSelectedIndex(this.getTabCount()-1);
-    }
 
+    public void focusLast() {
+	this.setSelectedIndex(this.getTabCount() - 1);
+    }
 
 }

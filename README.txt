@@ -6,6 +6,10 @@ Enjoy!
 
 Changelog:
 
+Version 2.1-
+- Slightly modified copy behavior of hyperlinks to make more sense
+-
+
 Version 2.0- 4/17/12
 - UI Updates:
 	- Windows look and feel
@@ -92,7 +96,6 @@ Version 0.1b - 6/18/11
 ********************
 
 Priorities:
-**- Have toast show EVERYTHING, exclude quote from time-click
 *- modtrace
 *- autogenerate settings
 *- allow jpg as well as png files

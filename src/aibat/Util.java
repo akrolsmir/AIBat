@@ -177,35 +177,27 @@ public final class Util {
 	return searchThrough.substring(s + start.length(), e);
     }
 
-    // Customized message will be aligned to Frame's bottom right.
- // TODO include 
+    // Basic, customized message, will be aligned to Frame's bottom right.
     public static void copyStringToClipboard(String toCopy, String message,
 	    Component toAlign) {
-	toCopy = "[quote=\"" + AIBatWindow.VERSION + "\"]" + toCopy + "[/quote]";
-	
 	Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 	clipboard.setContents(new StringSelection(toCopy), null);
 	new Notification(message, toAlign);
     }
 
-    // Formatted copy message instead of customized. Still aligned.
-    public static void copyStringToClipboard(String toCopy, Component toAlign) {
-	copyStringToClipboard(toCopy, copyMessage(toCopy), toAlign);
+    // Formatted copy message at mouse position
+    public static void copyStringToClipboard(String toCopy, String message) {
+	copyStringToClipboard(toCopy, message, null);
     }
 
     // Helper
-    private static String copyMessage(String s) {
+    public static String copyMessage(String s) {
 	return "Copied: \""
 		+ (s.length() <= COPY_CUT ? s : s.substring(0, COPY_CUT)
 			+ "...") + "\"";
     }
-    
-    private static final int COPY_CUT = 50;
 
-    // Formatted copy message @ mouse position
-    public static void copyStringToClipboard(String toCopy) {
-	copyStringToClipboard(toCopy, null);
-    }
+    private static final int COPY_CUT = 50;
 
     public static ArrayList<File> getAllFiles(File dir) {
 	ArrayList<File> allFiles = new ArrayList<File>();
@@ -296,37 +288,6 @@ public final class Util {
 	    return file.getAbsolutePath();
 	return null;
     }
-
-    // public static void getDurationWithMp3Spi( File file )
-    // throws UnsupportedAudioFileException,
-    // IOException
-    // {
-    // long start = System.currentTimeMillis();
-    //
-    // AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat( file );
-    // AudioFormat format = fileFormat.getFormat();
-    // if ( fileFormat instanceof TAudioFileFormat )
-    // {
-    // Map<?, ?> properties = ( (TAudioFileFormat)fileFormat ).properties();
-    // String key = "duration";
-    // Long microseconds = (Long)properties.get( key );
-    // int mili = (int)( microseconds / 1000 );
-    // System.out.println( formatTime( mili ) );
-    //
-    // System.out.println( format instanceof TAudioFormat );
-    //
-    // properties = ( (TAudioFormat)format ).properties();
-    // System.out.println( (Integer)properties.get( "bitrate" ) / 1000
-    // + " " + properties.get( "vbr" ) );
-    // }
-    // else
-    // {
-    // throw new UnsupportedAudioFileException();
-    // }
-    //
-    // System.out.println( System.currentTimeMillis() - start );
-    //
-    // }
 
     public static void errorMessage(String text, AIBatWindow window) {
 	JOptionPane.showMessageDialog(window, text, "Error",

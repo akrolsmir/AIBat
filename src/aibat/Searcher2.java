@@ -3,20 +3,15 @@ package aibat;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -24,8 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class Searcher2 {
 
@@ -52,14 +45,13 @@ public class Searcher2 {
 	    sm = new SettingsManager();
 	    songFolderLoc = new SettingsManager().getSongFolderLoc();
 	}
-	catch (FileNotFoundException e) {
-	    // TODO unnecessary?
+	catch (Exception e) {
 	    Util.errorSettings();
+	    Util.errorException(e);
 	    return;
 	}
-	// TODO move to AIBatMenu?
 	if (songFolderLoc.length() == 0) {
-	    // if no song folder was chosen
+	    // if song folder not selected, ask to do so.
 	    if (!promptForSongsFolder())
 		return;
 	}
@@ -183,7 +175,7 @@ public class Searcher2 {
 
     }
 
-    // True if successful
+    // True if successfully assigned song folder
     public boolean promptForSongsFolder() {
 	int n = JOptionPane
 		.showConfirmDialog(

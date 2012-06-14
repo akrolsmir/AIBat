@@ -3,7 +3,6 @@ package aibat;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.AbstractButton;
@@ -13,9 +12,8 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 public class AIBatMenu extends JMenuBar {
-    private JMenuItem openItem, exitItem, expClipItem,
-	    exploreItem, expHitsoundItem, searchItem,
-	    settingsTextItem, refreshItem,
+    private JMenuItem openItem, exitItem, expClipItem, exploreItem,
+	    expHitsoundItem, searchItem, settingsTextItem, refreshItem,
 
 	    songFolderItem, addBmItem, removeBmItem, bmThisItem,
 
@@ -70,7 +68,7 @@ public class AIBatMenu extends JMenuBar {
 	fileMenu.addSeparator();
 	fileMenu.add(exitItem);
 
-	// BOOKMARK MENU TODO make seperate?
+	// BOOKMARK MENU TODO make seperate (?)
 	BookmarkAction bookmarkAction = new BookmarkAction();
 	bookmarkMenu = new JMenu("Bookmarks");
 	bookmarkMenu.setMnemonic('B');
@@ -178,8 +176,6 @@ public class AIBatMenu extends JMenuBar {
 	    }
 	    JMenuItem m = (JMenuItem) e.getSource();
 	    if (m == searchItem) {
-		// New dialogue TODO
-		// new Searcher2( window );
 		window.search();
 	    }
 	    else if (m == songFolderItem) {
@@ -270,9 +266,8 @@ public class AIBatMenu extends JMenuBar {
 		bm.addActionListener(bookmarkAction);
 	    }
 	}
-	catch (FileNotFoundException e) {
-	    // e.printStackTrace();
-	    // System.out.println( "HeI" );
+	catch (Exception e) {
+	    Util.errorException(e);
 	}
 	return allBm;
     }

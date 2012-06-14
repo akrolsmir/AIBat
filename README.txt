@@ -13,6 +13,8 @@ Changelog:
 Version 2.1-
 - Slightly modified copy behavior of hyperlinks to make more sense
 - Reworded spinner NC warnings (credit: mm201, those)
+- Replaced "Help" menu with "Links"
+- 
 
 
 Version 2.0- 4/17/12
@@ -102,8 +104,7 @@ Version 0.1b - 6/18/11
 
 Priorities:
 *- modtrace
-*- autogenerate settings, link to changelog instead.
-*- allow jpg as well as png files
+**- autogenerate settings
 *- check if audioleadin total less than 2 secs
 - output difficulty values (Breeze)
 - use AttributeConsolidator, standardize .osu files on click.

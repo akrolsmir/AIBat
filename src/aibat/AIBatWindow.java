@@ -13,7 +13,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -22,7 +21,6 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import modtrace.ModTrace;
-
 import tabs.AIBatTabbedPane;
 import tabs.HitsoundsTab;
 import updater.Updater;
@@ -50,9 +48,8 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	    if (songFolderLoc.length() > 0)
 		directory = songFolderLoc;
 	}
-	catch (FileNotFoundException e) {
-	    // Util.errorSettings();
-	    // Skipped because search() will catch it
+	catch (Exception e) {
+	    Util.errorException(e);
 	}
 	AIBatMenu menu = new AIBatMenu(this);
 	setJMenuBar(menu);
@@ -126,7 +123,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	window.setSize(800, 600);
 	window.setLocationRelativeTo(null);
 
-	// TODO thread the search function?
+	// TODO thread the search function as well
 	window.search();
 	window.setVisible(true);
 	window.getSearcher().focus();
@@ -243,7 +240,6 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	}
     }
 
-    // TODO integrate export (what did I mean)?
     public void exportHitsounds() {
 	if (fileOpened) {
 	    tabs.addTab("Hitsounds", new HitsoundsTab(c));
@@ -254,7 +250,6 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	}
     }
 
-    // TODO integrate search (what did I mean)?
     public void search() {
 	searcher = new Searcher2(this);
 	if (searcher.getSongFolderLoc().length() > 0) {

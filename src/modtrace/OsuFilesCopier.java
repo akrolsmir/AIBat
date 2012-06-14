@@ -31,7 +31,6 @@ public class OsuFilesCopier {
 	for (File srcFile : this.osuFiles) {
 
 	    File destFile = new File(ORIG_SUBDIR + srcFile.getName() + ".orig");
-	    parsedOrigFiles.put(new OsuFileParser(destFile), srcFile);
 
 	    overwritePreference: switch (overwritePreference) {
 	    case NONE:
@@ -44,11 +43,10 @@ public class OsuFilesCopier {
 		    switch (JOptionPane
 			    .showOptionDialog(
 				    null,
-				    "File \""
-					    + destFile
-					    + "\" already exists. Overwrite?\n\n"
-					    + "(Overwrite only if you want to use the the current .osu file as a new starting reference for mod tracking.)",
-				    "File Already Exists",
+				    "A reference snapshot for this difficulty already exists. Would you like to overwrite it with a new one?\n\n"
+					    + "(ModTrace compares your edited .osu file against the reference snapshot.\n"
+					    + "In general, only overwrite the snapshot if you haven't begun your mod, but are about to start.)",
+				    "File already exists: \"" + destFile + "\"",
 				    JOptionPane.PLAIN_MESSAGE,
 				    JOptionPane.QUESTION_MESSAGE, null,
 				    options, options[2])) {
@@ -68,6 +66,8 @@ public class OsuFilesCopier {
 		writeOrigFile(srcFile, destFile);
 		break;
 	    }
+
+	    parsedOrigFiles.put(new OsuFileParser(destFile), srcFile);
 	}
     }
 

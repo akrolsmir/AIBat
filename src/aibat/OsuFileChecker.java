@@ -68,7 +68,7 @@ public class OsuFileChecker {
 			    + length
 			    + " ms long, which is shorter than "
 			    + MIN_SPIN_LENGTH
-			    + " ms; check that it gets at least 2000 on auto.\n";
+			    + " ms; check that it gets at least 1000 on auto.\n";
 		if (length > MAX_SPIN_LENGTH)
 		    spinLengthCheck += notations.get(h) + " - This spinner is "
 			    + length + " ms long, which is longer than "

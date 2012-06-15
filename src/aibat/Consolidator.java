@@ -2,8 +2,10 @@ package aibat;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -76,35 +78,24 @@ public class Consolidator {
 	checkRedColourKiaiEpilepsy();
 	skinSBChecker = new SkinSBChecker(dir, osuFileParsers, osbFiles,
 		epilepsyWarningFound);
-	// TODO remove
-	// new OsuFilesCopier(osuFiles);
     }
 
     public String checkGenMeta() {
 	String result = "";
-	String[] titles = OsuFileParser.TITLES;
-	for (int i = 0; i < titles.length; i++) {
-	    // Skip for sample set, mode, difficulty name (aka version), stack
-	    // leniency
-	    // if ( i == OsuFileParser.SAMPLESET_LOC
-	    // || i == OsuFileParser.MODE_LOC || i == OsuFileParser.DIFF_LOC
-	    // || i == OsuFileParser.STACK_LOC )
-	    // continue;
-	    switch (i) {
-	    case OsuFileParser.SAMPLESET_LOC:
-	    case OsuFileParser.MODE_LOC:
-	    case OsuFileParser.DIFF_LOC:
-	    case OsuFileParser.STACK_LOC:
-	    case OsuFileParser.BEATDIV_LOC:
+	// Skip for sample set, mode, difficulty name (aka version), stack
+	// leniency
+	String[] toSkip = { "SampleSet: ", "Mode: ", "Version:",
+		"StackLeniency: ", "BeatDivisor: " };
+	for (String title : OsuFileParser.TITLES) {
+	    if (Arrays.asList(toSkip).contains(title))
 		continue;
-	    default:
-		if (!checkElement(i)) {
-		    result += "\nInconsistency in " + titles[i] + "\n";
-		    for (OsuFileParser o : osuFileParsers) {
-			result += "  - " + o.getDiffBoxed() + " : "
-				+ o.getGenMeta()[i] + "\n";
-		    }
+	    else if (!checkElement(title)) {
+		result += "\nInconsistency in " + title + "\n";
+		for (OsuFileParser o : osuFileParsers) {
+		    result += "  - " + o.getDiffBoxed() + " : "
+			    + o.getGenMeta().get(title) + "\n";
 		}
+
 	    }
 	}
 	return result;
@@ -255,10 +246,10 @@ public class Consolidator {
 
     // Getters + Util **********************************************************
     // true if all elements are the same
-    private boolean checkElement(int i) {
+    private boolean checkElement(String title) {
 	HashSet<String> elementSet = new HashSet<String>();
 	for (OsuFileParser o : osuFileParsers) {
-	    elementSet.add(o.getGenMeta()[i]);
+	    elementSet.add(o.getGenMeta().get(title));
 	    if (elementSet.size() > 1)
 		return false;
 	}

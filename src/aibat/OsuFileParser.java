@@ -3,7 +3,9 @@ package aibat;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import obj.Circle;
 import obj.HitObject;
@@ -13,10 +15,10 @@ import obj.Spinner;
 public class OsuFileParser implements Comparable<OsuFileParser> {
     private String contents;
 
-    // Array of info from General and Metadata
-    private String[] osuInfo;
+    // Map of info under General and Metadata
+    private Map<String, String> osuInfo = new TreeMap<String, String>();
 
-    // ArrayList of all hitobjects in the map
+    // ArrayList of all hitobjects in the diff
     private ArrayList<HitObject> hitObjects = new ArrayList<HitObject>();
 
     private ArrayList<Integer> breakStarts, breakEnds;
@@ -52,16 +54,14 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
     };
     // @formatter:on
 
-    public final static int PREVIEW_LOC = 2, SAMPLESET_LOC = 4, STACK_LOC = 5,
-	    MODE_LOC = 6, EP_LOC = 9, DIFF_LOC = 13, TAGS_LOC = 15,
-	    BEATDIV_LOC = 16;
+//    public final static int PREVIEW_LOC = 2, SAMPLESET_LOC = 4, STACK_LOC = 5,
+//	    MODE_LOC = 6, EP_LOC = 9, DIFF_LOC = 13, TAGS_LOC = 15,
+//	    BEATDIV_LOC = 16;
 
     public OsuFileParser(File file) {
 	contents = Util.readFile(file);
-	int t = 0;
-	osuInfo = new String[TITLES.length];
-	for (int i = 0; i < TITLES.length; i++, t++) {
-	    osuInfo[i] = Util.extract(TITLES[t], contents);
+	for (String title : TITLES) {
+	    osuInfo.put(title, Util.extract(title, contents));
 	}
 	timer = new Timing(this);
 	try {
@@ -148,34 +148,38 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 
     public String toString() {
 	String result = "";
-	for (String s : osuInfo)
+	for (String s : osuInfo.keySet())
 	    System.out.println(s);
 	return result;
     }
 
-    public String[] getGenMeta() {
+    public Map<String, String> getGenMeta() {
 	return osuInfo;
     }
 
     public String getPreview() {
-	return osuInfo[PREVIEW_LOC];
+	return osuInfo.get("PreviewTime: ");
     }
 
     // returns difficulty name aka version
     public String getDiff() {
-	return osuInfo[DIFF_LOC];
+	return osuInfo.get("Version:");
     }
 
     public String getDiffBoxed() {
-	return "[" + osuInfo[DIFF_LOC] + "]";
+	return "[" + getDiff() + "]";
     }
 
     public String getTags() {
-	return osuInfo[TAGS_LOC];
+	return osuInfo.get("Tags:");
     }
 
     public int getBeatDivisor() {
-	return Integer.parseInt(osuInfo[BEATDIV_LOC]);
+	return Integer.parseInt(osuInfo.get("BeatDivisor: "));
+    }
+    
+    public String getStackLen() {
+	return osuInfo.get("StackLeniency: ");
     }
 
     public String getHitObjectsString() {
@@ -241,10 +245,7 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
     }
 
     public boolean epilepsyFound() {
-	if (osuInfo[EP_LOC].equals("1"))
-	    return true;
-	return false;
-
+	return (osuInfo.get("EpilepsyWarning: ").equals("1"));
     }
 
     // Utility
@@ -278,4 +279,5 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
     public int compareTo(OsuFileParser o) {
 	return getDiff().compareTo(o.getDiff());
     }
+
 }

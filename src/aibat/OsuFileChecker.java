@@ -14,7 +14,7 @@ import obj.TimingPoint;
 public class OsuFileChecker {
     private static final int MIN_SPIN_LENGTH = 750, MAX_SPIN_LENGTH = 7500,
 	    MIN_BREAK_LENGTH = 750, MAX_BREAK_LENGTH = 15000,
-	    BREAK_FREQ_SUG = 90000, BREAK_FREQ_ABS = 135000,
+	    BREAK_FREQ_SUG = 90000, BREAK_FREQ_ABS = 135000, MIN_LEAD_IN = 2000,
 	    MIN_CIRCLE_SIZE = 3, MAX_CIRCLE_SIZE = 7;
 
     private static final double MIN_STACK_LEN = 0.3;
@@ -115,7 +115,7 @@ public class OsuFileChecker {
     }
 
     private void checkStackLen() {
-	double stackLen = Double.parseDouble(ofp.getGenMeta()[OsuFileParser.STACK_LOC]);
+	double stackLen = Double.parseDouble(ofp.getStackLen());
 	if (stackLen < MIN_STACK_LEN)
 	    stackLenCheck += "The stack leniency is set to " + (stackLen)
 		    + ", which is below the recommended leniency of "
@@ -263,4 +263,8 @@ public class OsuFileChecker {
     public String getSpinNCCheck() {
 	return spinNCCheck;
     }
+    
+//    public String getLeadInCheck(){
+//	ofp.getGenMeta();
+//    }
 }

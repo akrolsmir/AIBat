@@ -2,7 +2,7 @@ package tabs;
 
 import aibat.Consolidator;
 
-public class GeneralTab extends AIBatTab {
+public class GeneralTab extends ContentTab {
 
     private Consolidator c;
 

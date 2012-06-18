@@ -2,7 +2,7 @@ package tabs;
 
 import aibat.SkinSBChecker;
 
-public class SkinSBTab extends AIBatTab {
+public class SkinSBTab extends ContentTab {
     
     private SkinSBChecker s;
 

@@ -3,7 +3,7 @@ package tabs;
 import aibat.OsuFileChecker;
 import aibat.OsuFileParser;
 
-public class osuDiffTab extends AIBatTab {
+public class osuDiffTab extends ContentTab {
 
     private OsuFileChecker ofc;
     private final String diffName;

@@ -4,7 +4,7 @@ import java.util.TreeMap;
 
 import modtrace.ModTrace;
 
-public class ModTraceTab extends AIBatTab implements Runnable {
+public class ModTraceTab extends ContentTab implements Runnable {
 
     private static final long REFRESH_INTERVAL = 3000;
     private ModTrace mt;

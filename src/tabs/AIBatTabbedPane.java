@@ -16,7 +16,7 @@ public class AIBatTabbedPane extends JTabbedPane {
     public final static int NUM_OVERALL = 3;
 
     // List of tabs that are reports
-    private List<AIBatTab> allReports = new ArrayList<AIBatTab>();
+    private List<ContentTab> allReports = new ArrayList<ContentTab>();
 
     private Consolidator c;
 
@@ -38,15 +38,15 @@ public class AIBatTabbedPane extends JTabbedPane {
 	}
 	// TODO ofc should not be a member of ofp, but rather separate?
 
-	for (AIBatTab tab : allReports) {
+	for (ContentTab tab : allReports) {
 	    addTab(tab.getTabName(), tab);
 	}
     }
 
     private String getAllWarnings() {
 	StringBuilder result = new StringBuilder();
-	for (AIBatTab tab : allReports) {
-	    String content = tab.allContentToString(AIBatTab.FORMAT_TO_BBCODE);
+	for (ContentTab tab : allReports) {
+	    String content = tab.allContentToString(ContentTab.FORMAT_TO_BBCODE);
 	    if (content != null && content.length() > 0)
 		// TODO use if/when [notice] is worth it and parsing is fixed.
 		// result.append("\n[" + tab.getTabName() + "]\n[notice]" +
@@ -57,7 +57,6 @@ public class AIBatTabbedPane extends JTabbedPane {
     }
 
     public void copyAllWarningsToClipboard() {
-
 	Util.copyStringToClipboard("[quote=\"" + AIBatWindow.VERSION + "\"]"
 		+ getAllWarnings() + "[/quote]",
 		"Copied all warnings to the clipboard",

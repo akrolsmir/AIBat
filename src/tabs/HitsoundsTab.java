@@ -4,7 +4,7 @@ import aibat.Consolidator;
 import aibat.OsuFileChecker;
 import aibat.OsuFileParser;
 
-public class HitsoundsTab extends AIBatTab {
+public class HitsoundsTab extends ContentTab {
     
     private final static String EXPLANATION = "The following shows the locations of all objects with the specified hitsound, exported into a format for\n"
 	+ "Bookmarks in the .osu file. Click to copy the entire line to the clipboard, and paste into the appropriate line\n"

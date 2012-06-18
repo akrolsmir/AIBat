@@ -19,7 +19,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import aibat.AIBatWindow;
 import aibat.Util;
 
-public abstract class AIBatTab extends JPanel {
+public abstract class ContentTab extends JPanel {
     // allContent maps section titles to their content
     protected Map<String, String> allContent = new TreeMap<String, String>();
 
@@ -32,7 +32,7 @@ public abstract class AIBatTab extends JPanel {
 
     private JEditorPane textArea = new JEditorPane();
 
-    public AIBatTab() {
+    public ContentTab() {
 	drawGUI();
 	// fillAllContent();
 	// showText(allContentToString(FORMAT_TO_HTML));

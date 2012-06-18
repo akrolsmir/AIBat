@@ -107,7 +107,7 @@ public class OsuFileChecker {
 			    + " - Unsnapped slider (end).\n";
 
 		// Catmull:
-		if (((Slider) h).getType().equals("C"))
+		if (((Slider) h).getSliderType().equals("C"))
 		    catmullCheck += notations.get(h)
 			    + " - This slider is a Catmull slider, which is discouraged.\n";
 	    }

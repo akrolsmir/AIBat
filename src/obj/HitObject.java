@@ -1,5 +1,7 @@
 package obj;
 
+import java.util.Vector;
+
 public abstract class HitObject {
     // Starting values
     protected int x, y, time;
@@ -47,6 +49,14 @@ public abstract class HitObject {
 
     public String toString() {
 	return x + "," + y + "," + time + "," + combo + "," + hitsound;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public int getTime() {

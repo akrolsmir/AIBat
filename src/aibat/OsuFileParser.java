@@ -54,9 +54,10 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
     };
     // @formatter:on
 
-//    public final static int PREVIEW_LOC = 2, SAMPLESET_LOC = 4, STACK_LOC = 5,
-//	    MODE_LOC = 6, EP_LOC = 9, DIFF_LOC = 13, TAGS_LOC = 15,
-//	    BEATDIV_LOC = 16;
+    // public final static int PREVIEW_LOC = 2, SAMPLESET_LOC = 4, STACK_LOC =
+    // 5,
+    // MODE_LOC = 6, EP_LOC = 9, DIFF_LOC = 13, TAGS_LOC = 15,
+    // BEATDIV_LOC = 16;
 
     public OsuFileParser(File file) {
 	contents = Util.readFile(file);
@@ -177,7 +178,7 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
     public int getBeatDivisor() {
 	return Integer.parseInt(osuInfo.get("BeatDivisor: "));
     }
-    
+
     public String getStackLen() {
 	return osuInfo.get("StackLeniency: ");
     }
@@ -192,10 +193,10 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
     }
 
     public String getTimingPointsString() {
-	// if no custom colors
-	if (extractBlock("[TimingPoints]", "[Colours]") == null)
-	    return extractBlock("[TimingPoints]", "[HitObjects]");
-	return extractBlock("[TimingPoints]", "[Colours]");
+	String result = extractBlock("[TimingPoints]", "[Colours]");
+	// if no custom colors, change the paramaters
+	return result.length() == 0 ? extractBlock("[TimingPoints]",
+		"[HitObjects]") : result;
     }
 
     public String getEventsString() {
@@ -251,11 +252,12 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
     // Utility
     // ***************************************************************************
 
+    // Extracts a block out of an .osu file
     private String extractBlock(String start, String end) {
 	int beginIndex = contents.indexOf(start);
 	int endIndex = contents.indexOf(end);
 	if (beginIndex < 0 || endIndex < 0)
-	    return null;
+	    return "";
 	// Adjust so substring cuts properly
 	beginIndex += start.length() + 2;
 	endIndex -= 2;

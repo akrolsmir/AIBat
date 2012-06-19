@@ -32,13 +32,16 @@ public class OsuFilesCopier {
 
 	    File destFile = new File(ORIG_SUBDIR + srcFile.getName() + ".orig");
 
-	    overwritePreference: switch (overwritePreference) {
-	    case NONE:
-		break overwritePreference;
-	    case NO_PREFERENCE:
-		// If All or Yes, continue. If No, None or closed, finish.
-		// Also, save All/None preference for the rest.
-		if (destFile.exists()) {
+	    if (!destFile.exists()) {
+		writeOrigFile(srcFile, destFile);
+	    }
+	    else {
+		overwritePreference: switch (overwritePreference) {
+		case NONE:
+		    break overwritePreference;
+		case NO_PREFERENCE:
+		    // If All or Yes, continue. If No, None or closed, finish.
+		    // Also, save All/None preference for the rest.
 		    Object[] options = { "All", "Yes", "No", "None" };
 		    switch (JOptionPane
 			    .showOptionDialog(
@@ -59,12 +62,11 @@ public class OsuFilesCopier {
 		    case 2:
 		    default: // if window closed
 			break overwritePreference;
-
 		    }
+		case ALL:
+		    writeOrigFile(srcFile, destFile);
+		    break;
 		}
-	    case ALL:
-		writeOrigFile(srcFile, destFile);
-		break;
 	    }
 
 	    parsedOrigFiles.put(new OsuFileParser(destFile), srcFile);

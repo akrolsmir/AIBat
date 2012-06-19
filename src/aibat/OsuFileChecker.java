@@ -78,7 +78,7 @@ public class OsuFileChecker {
 		// Check if properly NC'd:
 		if (!h.isNewCombo()) {
 		    spinNCCheck += notations.get(h)
-			    + " - Consider starting a new combo on this spinner.\n";
+			    + " - Perhaps add a NC on this spinner.\n";
 		}
 
 		// Check if next note properly NC'd:
@@ -87,7 +87,7 @@ public class OsuFileChecker {
 		    HitObject nextObj = iter.next();
 		    if (!(nextObj instanceof Spinner) && !nextObj.isNewCombo()) {
 			spinNCCheck += notations.get(nextObj)
-				+ " - Consider starting a new combo here, since this note follows a spinner.\n";
+				+ " - Perhaps add a NC here, since this note follows a spinner.\n";
 		    }
 		    iter.previous();
 		}

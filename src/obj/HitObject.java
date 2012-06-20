@@ -1,7 +1,5 @@
 package obj;
 
-import java.util.Vector;
-
 public abstract class HitObject {
     // Starting values
     protected int x, y, time;
@@ -9,10 +7,12 @@ public abstract class HitObject {
     // Ending values
     protected int endX, endY, endTime;
 
-    // 1 = circle; 2 = slider; 4 = spinner
+    // 1 = circle; 2 = slider; 8 = spinner
     // 4, 8, 16, 32, 64 = additional New Combo
     // combo is the sum of all these.
     protected int combo;
+
+    private boolean isNewCombo;
 
     // 0 = default, 2 = whistle, 4 = finish, 8 = clap
     // hitsound is the sum of all these
@@ -20,17 +20,21 @@ public abstract class HitObject {
 
     protected int on = 0;
 
-    public String[] k;// holds input split by "[,|:]"
+    protected String[] k;// holds input split by "[,|:]"
+
+    protected String input;
 
     // Format for first 5 items:
     // X,Y,Time,Combo,Hitsound
     public HitObject(String input) {
+	this.input = input;
 	k = input.split("[,|:]");
 	x = Integer.parseInt(k[on++]);
 	y = Integer.parseInt(k[on++]);
 	time = Integer.parseInt(k[on++]);
 	combo = Integer.parseInt(k[on++]);
 	hitsound = Integer.parseInt(k[on++]);
+	isNewCombo = (combo & 4) > 0;
     }
 
     public double distanceTo(HitObject other) {
@@ -52,11 +56,11 @@ public abstract class HitObject {
     }
 
     public int getX() {
-        return x;
+	return x;
     }
 
     public int getY() {
-        return y;
+	return y;
     }
 
     public int getTime() {
@@ -76,21 +80,10 @@ public abstract class HitObject {
     }
 
     public boolean isNewCombo() {
-	return combo - findType() >= 4;
-    }
-    
-    // Helper method for isNewCombo
-    // Finds the type of hitObj given the combo.
-    // 1 = circle, 2 = slider, 8 = spinner
-    private int findType() {
-	switch (Integer.lowestOneBit(combo)) {
-	case 1:
-	    return 1;
-	case 2:
-	    return 2;
-	default:
-	    return 8;
-	}
+	return isNewCombo;
     }
 
+    public String getInput() {
+	return input;
+    }
 }

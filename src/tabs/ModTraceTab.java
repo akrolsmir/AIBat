@@ -33,10 +33,11 @@ public class ModTraceTab extends ContentTab implements Runnable {
     @Override
     public void run() {
 	while (true) {
-	    invalidate();
 	    fillAllContent();
-	    showText(allContentToString(FORMAT_TO_HTML));
-	    validate();
+	    String toShow = allContentToString(FORMAT_TO_HTML);
+	    showText(toShow);
+//	    invalidate();
+//	    validate();
 	    System.out.println("ModTrace Shown");
 	    try {
 		Thread.sleep(REFRESH_INTERVAL);

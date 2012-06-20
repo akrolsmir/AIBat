@@ -22,7 +22,6 @@ public class Slider extends HitObject {
 	p = new int[numPoints][2];
 	p[0][0] = x;
 	p[0][1] = y;
-	// p[0][2] = hitsound;
 
 	for (int i = 1; i < numPoints; i++) {
 	    p[i][0] = Integer.parseInt(k[on++]);
@@ -42,10 +41,11 @@ public class Slider extends HitObject {
 		allHitsounds[i] = Integer.parseInt(k[on++]);
 	    else
 		allHitsounds[i] = hitsound;
-	    allTimes[i] = (int) (time + i * timeInterval);
+	    //May or may not be 1 ms off, same w/ Math.floor
+	    allTimes[i] = (int) ((time + i * timeInterval));
 	}
 	endTime = allTimes[allTimes.length - 1];
-
+	
 	// For now, uses the last node for endX and endY
 	if (repeats % 2 == 0) {
 	    endX = x;

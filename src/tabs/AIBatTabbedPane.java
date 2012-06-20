@@ -1,5 +1,6 @@
 package tabs;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,13 +46,19 @@ public class AIBatTabbedPane extends JTabbedPane {
 
     private String getAllWarnings() {
 	StringBuilder result = new StringBuilder();
-	for (ContentTab tab : allReports) {
-	    String content = tab.allContentToString(ContentTab.FORMAT_TO_BBCODE);
+	int count = this.getTabCount();
+	for (int i = 0; i < count; i++) {
+	    Component comp = this.getComponentAt(i);
+	    if (!(comp instanceof ContentTab))
+		continue;
+	    ContentTab tab = (ContentTab) (comp);
+	    String content = tab
+		    .allContentToString(ContentTab.FORMAT_TO_BBCODE);
 	    if (content != null && content.length() > 0)
 		// TODO use if/when [notice] is worth it and parsing is fixed.
-		// result.append("\n[" + tab.getTabName() + "]\n[notice]" +
-		// content + "[/notice]\n");
-		result.append("\n[" + tab.getTabName() + "]\n" + content);
+		result.append("\n[" + tab.getTabName() + "]\n[notice]"
+			+ content + "[/notice]\n");
+	    // result.append("\n[" + tab.getTabName() + "]\n" + content);
 	}
 	return result.toString();
     }

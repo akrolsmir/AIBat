@@ -50,7 +50,7 @@ public class AIBatToolbar extends JToolBar {
 	    }
 	});
 
-	JButton copyButton = new JButton("Copy", createImageIcon(
+	JButton copyButton = new JButton("Copy All", createImageIcon(
 		"/icons/page_copy.png", ""));
 	add(copyButton);
 	copyButton.addActionListener(new ActionListener() {

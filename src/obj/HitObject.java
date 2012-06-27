@@ -86,4 +86,8 @@ public abstract class HitObject {
     public String getInput() {
 	return input;
     }
+    
+    public String getPosString(){
+	return "{x:" + x + " y:" + y + "}";
+    }
 }

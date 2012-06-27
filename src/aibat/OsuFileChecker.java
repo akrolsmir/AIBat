@@ -14,8 +14,8 @@ import obj.TimingPoint;
 public class OsuFileChecker {
     private static final int MIN_SPIN_LENGTH = 750, MAX_SPIN_LENGTH = 7500,
 	    MIN_BREAK_LENGTH = 750, MAX_BREAK_LENGTH = 15000,
-	    BREAK_FREQ_SUG = 90000, BREAK_FREQ_ABS = 135000, MIN_LEAD_IN = 2000,
-	    MIN_CIRCLE_SIZE = 3, MAX_CIRCLE_SIZE = 7;
+	    BREAK_FREQ_SUG = 90000, BREAK_FREQ_ABS = 135000,
+	    MIN_LEAD_IN = 2000, MIN_CIRCLE_SIZE = 3, MAX_CIRCLE_SIZE = 7;
 
     private static final double MIN_STACK_LEN = 0.3;
 
@@ -260,11 +260,19 @@ public class OsuFileChecker {
 	return "";
     }
 
+  //TODO understand how countdown works
+    public String getLeadInCheck() {
+	int leadIn = ofp.getAudioLeadIn()
+		+ ofp.getHitObjects().get(0).getTime();
+	if (leadIn < MIN_LEAD_IN)//!ofp.countdownEnabled() add in if countdown adds to lead-in
+	    return "There is only " + leadIn
+		    + " ms of audio lead-in, which is less than the minimum of "
+		    + MIN_LEAD_IN + " ms.";
+	return "";
+    }
+
     public String getSpinNCCheck() {
 	return spinNCCheck;
     }
-    
-//    public String getLeadInCheck(){
-//	ofp.getGenMeta();
-//    }
+
 }

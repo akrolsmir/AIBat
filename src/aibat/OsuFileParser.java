@@ -15,7 +15,7 @@ import obj.Spinner;
 public class OsuFileParser implements Comparable<OsuFileParser> {
     private String contents;
 
-    // Map of info under General and Metadata
+    // Map of info in the .osu file (mostly from General and Metadata)
     private Map<String, String> osuInfo = new TreeMap<String, String>();
 
     // ArrayList of all hitobjects in the diff
@@ -32,7 +32,8 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
     private OsuFileChecker ofc;
 
     // @formatter:off
-    public final static String[] TITLES = { "AudioFilename: ", // index = 0
+    public final static String[] TITLES = { 
+	    "AudioFilename: ", // index = 0
 	    "AudioLeadIn: ", // 1
 	    "PreviewTime: ", // 2
 	    "Countdown: ", // 3
@@ -97,9 +98,8 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 		    for (int i = 0; i < line.length(); i++)
 			if (line.charAt(i) == ':')
 			    p++;
-		    // TODO ?
 		    try {
-			hitObjects.add(new Slider(line, p, getSliderX(), timer
+			hitObjects.add(new Slider(line, p, getSliderMultiplier(), timer
 				.getEffectiveBeatSpace(time)));
 		    }
 		    catch (Exception e) {
@@ -154,7 +154,7 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 	return result;
     }
 
-    public Map<String, String> getGenMeta() {
+    public Map<String, String> getOsuInfo() {
 	return osuInfo;
     }
 
@@ -177,6 +177,10 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 
     public int getBeatDivisor() {
 	return Integer.parseInt(osuInfo.get("BeatDivisor: "));
+    }
+
+    public int getAudioLeadIn() {
+	return Integer.parseInt(osuInfo.get("AudioLeadIn: "));
     }
 
     public String getStackLen() {
@@ -217,7 +221,7 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
     }
 
     // Gets the SliderMultiplier
-    public double getSliderX() {
+    public double getSliderMultiplier() {
 	return Double.parseDouble(Util.extract("SliderMultiplier:", contents));
     }
 
@@ -247,6 +251,10 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 
     public boolean epilepsyFound() {
 	return (osuInfo.get("EpilepsyWarning: ").equals("1"));
+    }
+    
+    public boolean countdownEnabled() {
+	return (!osuInfo.get("Countdown: ").equals("0"));
     }
 
     // Utility

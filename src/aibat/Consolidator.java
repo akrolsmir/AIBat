@@ -93,7 +93,7 @@ public class Consolidator {
 		result += "\nInconsistency in " + title + "\n";
 		for (OsuFileParser o : osuFileParsers) {
 		    result += "  - " + o.getDiffBoxed() + " : "
-			    + o.getGenMeta().get(title) + "\n";
+			    + o.getOsuInfo().get(title) + "\n";
 		}
 
 	    }
@@ -249,7 +249,7 @@ public class Consolidator {
     private boolean checkElement(String title) {
 	HashSet<String> elementSet = new HashSet<String>();
 	for (OsuFileParser o : osuFileParsers) {
-	    elementSet.add(o.getGenMeta().get(title));
+	    elementSet.add(o.getOsuInfo().get(title));
 	    if (elementSet.size() > 1)
 		return false;
 	}

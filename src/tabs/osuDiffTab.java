@@ -26,6 +26,7 @@ public class osuDiffTab extends ContentTab {
 	allContent.put("Stack Leniency", ofc.getStackLenCheck());
 	allContent.put("Non-Downbeat Kiai Times", ofc.getWrongKiais());
 	allContent.put("Preview Point", ofc.getPreviewCheck());
+	allContent.put("Audio Lead-In", ofc.getLeadInCheck());
     }
 
     @Override

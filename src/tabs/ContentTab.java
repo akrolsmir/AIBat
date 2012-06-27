@@ -23,6 +23,8 @@ public abstract class ContentTab extends JPanel {
     // allContent maps section titles to their content
     protected Map<String, String> allContent = new TreeMap<String, String>();
 
+    protected String tabName = "default";
+
     // Add "(?: - )?" to include the " - " in the regex
     private static final String TIME_REGEX = "(\\d{2}:\\d{2}:\\d{3}(?: \\(\\d+\\))?)";
     private static final String LINK_REGEX = "<a href=\"$1\">$1</a>";
@@ -72,7 +74,12 @@ public abstract class ContentTab extends JPanel {
 	textArea.setText(toShow);
     }
 
-    public abstract String getTabName();
+    public String getTabName() {
+	for (String s : allContent.values())
+	    if (s != null && s.length() > 0)
+		return "*" + tabName;
+	return tabName;
+    }
 
     private class HyperlinkCopier implements HyperlinkListener {
 	@Override

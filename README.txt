@@ -2,9 +2,19 @@ This program assists mappers and modders by automating many of the tedious, cler
 
 Its use is designed to be intuitive, but if you have any questions drop by http://osu.ppy.sh/forum/t/55305.
 
-Thanks to everyone credited below as well as many unnamed others for all your contributions.
+Thanks to everyone credited below (as well as many unnamed others) for all your contributions!
 
-Enjoy!
+*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+
+Upcoming:
+*- ModTrace
+	- Get basics working
+	- in-game bookmarks -> working stuff (and enabled by default)
+		- Or even better: editable ModTrace panel by changing TreeMap in DiffComparator to ArrayList or sth.
+	- Make ModTrace disableable.
+- Categorize warnings as must fix/not
+- Aleks' issue + have reports include version info + diff
+- check for multiple hitobjects @ same time
 
 *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
 
@@ -14,8 +24,12 @@ Version 2.1-
 - Slightly modified copy behavior of hyperlinks to make more sense
 - Reworded spinner NC warnings (credit: mm201, those)
 - Replaced "Help" menu with "Links"
-- 
-
+- settings.txt now automatically generated
+- Spinner warning changed to 1000 to reflect ranking guidelines
+- Bugfix: Scenario of missing "//Break Periods" (credit: NatsumeRin)
+- Modified toolbar to be "Copy All", modified functionality accordingly
+- Check if AudioLeadIn total less than 2 secs
+- Places a '*' in front of tabs with content in them
 
 Version 2.0- 4/17/12
 - UI Updates:
@@ -102,22 +116,13 @@ Version 0.1b - 6/18/11
 
 *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
 
-Priorities:
-*- modtrace
-**- autogenerate settings
-*- check if audioleadin total less than 2 secs
+To do:
 - output difficulty values (Breeze)
 - use AttributeConsolidator, standardize .osu files on click.
 - Settings menu- Permanently disable popup, hide unused warnings
 - Search button in Searcher2
-- Categorize warnings as must fix/not
-- ModTrace enabled by default, disableable.
-- Aleks' issue + have reports include version info.
-
 - Ask peppy for HitObject for slider's endposition;
 	- Add option to show all distance spacings (from OsuDistanceChecker).
-
-To do:
 - Order tabs by number of hitobjects
 - Add option to close individual tabs
 - Add option to save all warnings as txt.

@@ -3,15 +3,15 @@ package tabs;
 import aibat.Consolidator;
 
 public class AllTab extends ContentTab {
-    
+
     private Consolidator c;
 
-    public AllTab(Consolidator c)
-    {
+    public AllTab(Consolidator c) {
 	super();
 	this.c = c;
 	fillAllContent();
 	showText(allContentToString(FORMAT_TO_HTML));
+	tabName = "All .osu Files";
     }
 
     @Override
@@ -22,11 +22,6 @@ public class AllTab extends ContentTab {
 	allContent.put("Tags", c.checkTags());
 	allContent.put("Kiai", c.getKiaiCheck());
 
-    }
-
-    @Override
-    public String getTabName() {
-	return "All .osu Files";
     }
 
 }

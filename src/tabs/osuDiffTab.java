@@ -14,6 +14,7 @@ public class osuDiffTab extends ContentTab {
 	diffName = ofp.getDiff();
 	fillAllContent();
 	showText(allContentToString(FORMAT_TO_HTML));
+	tabName = diffName;
     }
 
     @Override
@@ -27,11 +28,6 @@ public class osuDiffTab extends ContentTab {
 	allContent.put("Non-Downbeat Kiai Times", ofc.getWrongKiais());
 	allContent.put("Preview Point", ofc.getPreviewCheck());
 	allContent.put("Audio Lead-In", ofc.getLeadInCheck());
-    }
-
-    @Override
-    public String getTabName() {
-	return diffName;
     }
 
 }

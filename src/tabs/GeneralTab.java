@@ -12,6 +12,7 @@ public class GeneralTab extends ContentTab {
 	this.c = c;
 	fillAllContent();
 	showText(allContentToString(FORMAT_TO_HTML));
+	tabName = "General";
     }
 
     @Override
@@ -22,8 +23,4 @@ public class GeneralTab extends ContentTab {
 	allContent.put("Custom Hitsounds", c.checkCustomHitsounds());
     }
 
-    @Override
-    public String getTabName() {
-	return "General";
-    }
 }

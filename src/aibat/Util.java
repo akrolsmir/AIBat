@@ -14,6 +14,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.AudioFileFormat;
@@ -136,26 +140,14 @@ public final class Util {
 
     // Formats int time to MM:SS:mmm
     public static String formatTime(int time) {
-	boolean isNegative = false;
-	if (time < 0) {
+	boolean isNegative = time < 0;
+	if (isNegative)
 	    time = -time;
-	    isNegative = true;
-	}
-
-	int min = 0, sec, ms;
-	while (time > 60000) {
-	    time -= 60000;
-	    min++;
-	}
-	sec = time / 1000;
-	ms = time % 1000;
 	DecimalFormat two = new DecimalFormat("00");
 	DecimalFormat three = new DecimalFormat("000");
-	String result = two.format(min) + ":" + two.format(sec) + ":"
-		+ three.format(ms);
-	if (isNegative)
-	    result = "-" + result;
-	return result;
+	return (isNegative ? "-" : "") + two.format(time / 60000) + ":"
+		+ two.format(time % 60000 / 1000) + ":"
+		+ three.format(time % 1000);
     }
 
     // extracts the String following title, until \n, in String searchThrough
@@ -191,13 +183,13 @@ public final class Util {
     }
 
     // Helper
+    private static final int COPY_CUT = 50;
+
     public static String copyMessage(String s) {
 	return "Copied: \""
 		+ (s.length() <= COPY_CUT ? s : s.substring(0, COPY_CUT)
 			+ "...") + "\"";
     }
-
-    private static final int COPY_CUT = 50;
 
     public static ArrayList<File> getAllFiles(File dir) {
 	ArrayList<File> allFiles = new ArrayList<File>();
@@ -308,6 +300,8 @@ public final class Util {
     }
 
     public static void errorException(Exception e, String addText) {
+	e.printStackTrace();
+
 	StringWriter sw = new StringWriter();
 	PrintWriter pw = new PrintWriter(sw);
 	e.printStackTrace(pw);
@@ -328,23 +322,35 @@ public final class Util {
 
     public static void openHyperlinkInBrowser(String url) {
 	try {
-	    java.awt.Desktop.getDesktop().browse(
-		    java.net.URI.create(url));
+	    java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 	}
 	catch (Exception e1) {
 	    Util.errorException(e1);
 	}
     }
 
-//     Test
-//     public static void main(String args[]){
-//	 Util.openHyperlinkInBrowser("www.google.com");
-//	 Util.openHyperlinkInBrowser("https://github.com/akrolsmir/AIBat");
-//     }
-    // throws UnsupportedAudioFileException, IOException {
-    // String testFile =
-    // "C:\\Users\\Akrolsmir\\Desktop\\Gaming Programs\\osu!\\Songs\\32318 DEEN - Eien no Ashita\\101 Eternal Tomorrow (Tales of Hearts Version).mp3";
-    // System.out.println(Util.getBitrate(new File(testFile)));
-    // }
+    // returns arg1 + sep + arg2 + sep... + argN
+    public static String colToStr(Collection<String> col, String sep) {
+	if (col == null || col.size() == 0)
+	    return "";
+	StringBuilder result = new StringBuilder();
+	for (String s : col)
+	    result.append(s + sep);
+	return result.toString().substring(0, result.length() - sep.length());
+    }
+
+    // Test
+    public static void main(String args[]) {
+	// Util.openHyperlinkInBrowser("www.google.com");
+	// Util.openHyperlinkInBrowser("https://github.com/akrolsmir/AIBat");
+	// }
+	// throws UnsupportedAudioFileException, IOException {
+	// String testFile =
+	// "C:\\Users\\Akrolsmir\\Desktop\\Gaming Programs\\osu!\\Songs\\32318 DEEN - Eien no Ashita\\101 Eternal Tomorrow (Tales of Hearts Version).mp3";
+	// System.out.println(Util.getBitrate(new File(testFile)))
+	// String[] hi = { "one", "two", "three" };
+	// System.out.println(colToStr(Arrays.asList(hi), "and"));
+	System.out.println(Util.formatTime(-143456));
+    }
 
 }

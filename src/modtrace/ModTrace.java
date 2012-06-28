@@ -14,7 +14,6 @@ import aibat.OsuFileParser;
 
 public class ModTrace implements Runnable {
 
-    public final static String VERSION = "ModTrace v0.1b";
     public ModTraceTab modTraceTab;
 
     // Maps the original file, parsed, to the corresponding new version

@@ -44,7 +44,7 @@ public class HitsoundsTab extends ContentTab {
     
     @Override
     public String getTabName() {
-	return "Hitsounds";
+	return "*Hitsounds";
     }
 
 }

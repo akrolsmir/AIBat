@@ -37,8 +37,7 @@ public class AIBatTabbedPane extends JTabbedPane {
 	for (OsuFileParser ofp : c.getOsuFileParsers()) {
 	    allReports.add(new osuDiffTab(ofp));
 	}
-	// TODO ofc should not be a member of ofp, but rather separate?
-
+	// TODO ofc should not be a member of ofp, but rather separate (?)
 	for (ContentTab tab : allReports) {
 	    addTab(tab.getTabName(), tab);
 	}
@@ -54,10 +53,12 @@ public class AIBatTabbedPane extends JTabbedPane {
 	    ContentTab tab = (ContentTab) (comp);
 	    String content = tab
 		    .allContentToString(ContentTab.FORMAT_TO_BBCODE);
+	    String tabName = tab.getTabName();
+	    if(tabName.charAt(0) == '*')
+		tabName = tabName.substring(1);
 	    if (content != null && content.length() > 0)
-		// TODO use if/when [notice] is worth it and parsing is fixed.
-		result.append("\n[" + tab.getTabName() + "]\n[notice]"
-			+ content + "[/notice]\n");
+		result.append("\n[" + tabName + "]\n[notice]" + content
+			+ "[/notice]\n");
 	    // result.append("\n[" + tab.getTabName() + "]\n" + content);
 	}
 	return result.toString();

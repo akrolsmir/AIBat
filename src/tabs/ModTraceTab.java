@@ -40,7 +40,7 @@ public class ModTraceTab extends ContentTab implements Runnable {
 
     @Override
     public String getTabName() {
-	return "ModTrace";
+	return "*ModTrace";
     }
 
     @Override

@@ -6,7 +6,7 @@ import modtrace.ModTrace;
 
 public class ModTraceTab extends ContentTab implements Runnable {
 
-    private static final long REFRESH_INTERVAL = 3000;
+    private static final long REFRESH_INTERVAL = 10000;
     private ModTrace mt;
     private Thread thread;
     private final static String WELCOME_MSG = "<u><a style=\"font-family:georgia;font-size:16\">Welcome to ModTrace!</a></u>\n"

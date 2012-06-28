@@ -54,15 +54,17 @@ public class ModTrace implements Runnable {
 	return result;
     }
 
+    private final static int SLEEP_INTERVAL = 60000;
+    
     @Override
     public void run() {
 	// TODO Should something be here?
 	// Oh yeah, probably update.
-	// Hacky solution: check every 10 seconds if interrupted
+	// Hacky solution: continuous sleep
 	while (true) {
 	    try {
-		Thread.sleep(10000);
-		System.out.println("Sleeping again for 10 sec");// TODO remove
+		Thread.sleep(SLEEP_INTERVAL);
+		System.out.println("Sleeping again for " + SLEEP_INTERVAL + " ms.");// TODO remove
 	    }
 	    catch (InterruptedException e) {
 		e.printStackTrace();

@@ -15,6 +15,7 @@ import aibat.OsuFileParser;
 import aibat.Util;
 
 public class DiffComparator {
+    // TODO implement TreeMultiMap instead?
     private Map<String, String> changes = new TreeMap<String, String>();
     private Map<HitObject, String> origNotations;
 
@@ -49,8 +50,7 @@ public class DiffComparator {
 		remove(i);
 		i = initIter.hasNext() ? initIter.next() : null;
 	    }
-	    else // if (iTime > cTime)
-	    {
+	    else {// if (iTime > cTime)
 		add(c);
 		c = chngIter.hasNext() ? chngIter.next() : null;
 	    }
@@ -67,59 +67,126 @@ public class DiffComparator {
     }
 
     private void add(HitObject h) {
-	List<String> addMessages = new ArrayList<String>();
+	List<String> addMsgs = new ArrayList<String>();
 
 	if (h instanceof Circle) {
-	    addMessages.add("add a circle at " + h.getPosString());
+	    addMsgs.add("add a circle at " + h.getPosString());
 
 	    if (h.isNewCombo())
-		addMessages.add("with a NC");
+		addMsgs.add("with a NC");
 	}
 	else if (h instanceof Spinner) {
-	    addMessages.add("add a spinner from here until "
+	    addMsgs.add("add a spinner from here until "
 		    + Util.formatTime(h.getEndTime()));
 
 	    if (!h.isNewCombo())
-		addMessages.add("without a NC");
+		addMsgs.add("without a NC");
 	}
 	else if (h instanceof Slider) {
 	    Slider s = ((Slider) h);
-	    StringBuilder temp = new StringBuilder(
+	    StringBuilder initMsg = new StringBuilder(
 		    "add a slider from here until "
 			    + Util.formatTime(s.getTimeAt(1)));
 
-	    switch (s.getRepeats()) {
-	    case 0:
-		Util.errorMessage(h.toString());
-		break;
-	    case 1:
-		break;
+	    int ends = s.getRepeats() + 1;
+	    switch (ends) {
 	    case 2:
-		temp.append(" and then repeat it once");
+		break;
+	    case 3:
+		initMsg.append(" and then repeat it once");
 		break;
 	    default:
-		temp.append(" and then repeat it " + (s.getRepeats() - 1)
-			+ " times");
+		initMsg.append(" and then repeat it " + (ends - 2) + " times");
 	    }
-	    addMessages.add(temp.toString());
+	    addMsgs.add(initMsg.toString());
+
+	    for (int j = 0; j < ends; j++) {
+		int sH = s.getHitsoundAt(j);
+		if (sH == 0)
+		    continue;
+
+		String repeatPos;
+		if (j == 0)
+		    repeatPos = " on the start";
+		else if (j == ends - 1)
+		    repeatPos = " on the end";
+		else
+		    repeatPos = " on repeat #" + j + " (at "
+			    + Util.formatTime(s.getTimeAt(j)) + ")";
+
+		addMsgs.add("with" + hitsoundString(sH, " a ") + repeatPos);
+	    }
 
 	    if (h.isNewCombo())
-		addMessages.add("with a NC");
-	    // TODO add hitsounds for individual repeats
+		addMsgs.add("with a NC");
 	}
 
 	// Always notify about hitsounds
 	if (h.getHitsound() > 1)
-	    addMessages.add("with" + hitsoundString(h.getHitsound(), " a ")
+	    addMsgs.add("with" + hitsoundString(h.getHitsound(), " a ")
 		    + ((h instanceof Slider) ? " on the entire slider" : ""));
 
-	changes.put(Util.formatTime(h.getTime()),
-		Util.colToStr(addMessages, ", "));
+	changes.put(Util.formatTime(h.getTime()), Util.colToStr(addMsgs, ", "));
 
     }
 
     private void remove(HitObject h) {
 	changes.put(origNotations.get(h), "remove this " + className(h));
+    }
+
+    private static String className(HitObject h) {
+	String classString = h.getClass().toString();
+	return (classString.substring(classString.indexOf('.') + 1)
+		.toLowerCase());
+    }
+
+    private void compare(HitObject i, HitObject c) {
+	List<String> compareMsgs = new ArrayList<String>();
+
+	if (i instanceof Circle) {
+	    if (i.getX() != c.getX() && i.getY() != c.getY())
+		compareMsgs.add("move to " + c.getPosString());
+	}
+	else if (i instanceof Spinner) {
+	    if (i.getEndTime() != c.getEndTime())
+		compareMsgs.add("end at " + Util.formatTime(c.getEndTime()));
+	}
+	else if (i instanceof Slider) {
+	    Slider iS = ((Slider) i), cS = ((Slider) c);
+	    // TODO finish with moved nodes, changed repeats.
+
+	    // only for the matching times
+	    int ends = iS.getRepeats() + 1;
+	    for (int j = 0; j < ends; j++) {
+		if (iS.getTimeAt(j) == cS.getTimeAt(j))
+		    continue;
+		int iH = iS.getHitsoundAt(j), cH = cS.getHitsoundAt(j);
+		if (iH == cH)
+		    continue;
+
+		String repeatPos;
+		if (j == 0)
+		    repeatPos = " on the start";
+		else if (j == ends - 1)
+		    repeatPos = " on the end";
+		else
+		    repeatPos = " on repeat #" + j + " (at "
+			    + Util.formatTime(iS.getTimeAt(j)) + ")";
+
+		compareMsgs.add(compareHitsounds(iH, cH) + repeatPos);
+	    }
+	}
+	int iH = i.getHitsound(), cH = c.getHitsound();
+	if (iH != cH)
+	    compareMsgs.add(compareHitsounds(iH, cH)
+		    + ((i instanceof Slider) ? " on the entire slider" : ""));
+
+	if (!i.isNewCombo() && c.isNewCombo())
+	    compareMsgs.add("add NC");
+	if (i.isNewCombo() && !c.isNewCombo())
+	    compareMsgs.add("remove NC");
+
+	changes.put(origNotations.get(i), Util.colToStr(compareMsgs, ", "));
     }
 
     private static List<String> hitsoundIntToList(int hitsound) {
@@ -144,82 +211,42 @@ public class DiffComparator {
 	return pre + Util.colToStr(hitsoundIntToList(hitsound), " and" + pre);
     }
 
-    private void compare(HitObject i, HitObject c) {
-	List<String> compMessages = new ArrayList<String>();
+    private static String compareHitsounds(int iH, int cH) {
+	if (iH == cH)
+	    return null;
 
-	if (i instanceof Circle) {
-	    if (i.getX() != c.getX() && i.getY() != c.getY())
-		compMessages.add("move to " + c.getPosString());
-	}
-	else if (i instanceof Spinner) {
-	    if (i.getEndTime() != c.getEndTime())
-		compMessages.add("end at " + Util.formatTime(c.getEndTime()));
-	}
-	else if (i instanceof Slider) {
-	    // TODO finish
-	}
-	
-	int iH = i.getHitsound(), cH = c.getHitsound();
-	if (iH != cH) {
-	    int addH = ~iH & cH;
-	    if (addH > 1)
-		compMessages.add("add" + hitsoundString(addH, " a "));
-	    
-	    int removeH = iH & ~cH;
-	    if (removeH > 1)
-		compMessages.add("remove" + hitsoundString(removeH, " the "));
-	}
+	StringBuilder result = new StringBuilder();
+	int addH = ~iH & cH;
+	if (addH > 1)
+	    result.append("add" + hitsoundString(addH, " a "));
 
-	if (!i.isNewCombo() && c.isNewCombo())
-	    compMessages.add("add NC");
-	if (i.isNewCombo() && !c.isNewCombo())
-	    compMessages.add("remove NC");
-
-	changes.put(origNotations.get(i), Util.colToStr(compMessages, ", "));
-    }
-
-    private static String className(HitObject h) {
-	String classString = h.getClass().toString();
-	return (classString.substring(classString.indexOf('.') + 1)
-		.toLowerCase());
+	int removeH = iH & ~cH;
+	if (removeH > 1) {
+	    if (result.length() > 0)
+		result.append(" and ");
+	    result.append("remove" + hitsoundString(removeH, " the "));
+	}
+	return result.toString();
     }
 
     // Parses changes into a nicely formatted string
     private String getChangesString() {
 	StringBuilder result = new StringBuilder();
 	for (Entry<String, String> change : changes.entrySet()) {
-	    // Capitalize + append newline
+
 	    String toShow = change.getValue();
-	    if(toShow != null && toShow.length() > 0)
+	    if (toShow == null || toShow.length() == 0)
+		continue;
+
+	    // Capitalize + append newline
 	    toShow = Character.toUpperCase(toShow.charAt(0))
 		    + toShow.substring(1) + ".\n";
-
 	    result.append(change.getKey() + " - " + toShow);
 	}
 	return result.toString();
     }
 
-    public static void main(String[] args) {
-	// System.out.println(className(new Circle("113,86,10576,1,0")));
-	// long start = System.currentTimeMillis();
-	// OsuFileParser ofp1 = new OsuFileParser(
-	// new File(
-	// "C:\\Users\\Akrolsmir\\Desktop\\fripSide - Prominence-Version 2007\\fripSide - prominence -version 2007- (akrolsmir) [Normal].osu"));
-	// OsuFileParser ofp2 = new OsuFileParser(
-	// new File(
-	// "C:\\Users\\Akrolsmir\\Desktop\\fripSide - Prominence-Version 2007\\fripSide - prominence -version 2007- (akrolsmir) [Normal_2].osu"));
-	// System.out.println(new DiffComparator(ofp1, ofp2).compare());
-	// Util.logTime(start);
-	// int hitsound = 10;
-	// System.out.println((hitsound & 8) == 8);
-	// System.out.println((hitsound & 4) == 4);
-	// System.out.println((hitsound & 2) == 2);
-	for (int i = 0; i < 16; i++) {
-	    System.out.println(i + ": " + hitsoundString(i, " a "));
-	    // System.out.println(i + ": " + hitsoundString(i, false));
-	    // System.out.println(i + ": " + ((i & 4) > 0));
-	}
-    }
+    // public static void main(String[] args) {
     // }
 
     // TODO finish, use if you want to combine add+remove or remove+add into
@@ -239,33 +266,4 @@ public class DiffComparator {
     // }
     // }
 
-    // FIXME some way to have natural lang (bit flags?)
-    // int hitsound = h.getHitsound();
-    // if (hitsound != 0) {
-    // if (hitsound >= 8) {
-    // hitsound -= 8;
-    // addMessage.append(", with a clap");
-    // }
-    // if (hitsound >= 4) {
-    // hitsound -= 4;
-    // addMessage.append(", with a finish");
-    // }
-    // if (hitsound >= 2) {
-    // addMessage.append(", with a whistle");
-    // }
-    // if (h instanceof Slider) {
-    // addMessage.append(" on the entire slider");
-    // }
-    // }
-
-    // private enum Hitsound {
-    // CLAP(8, "clap"), FINISH(4, "finish"), WHISTLE(2, "whistle");
-    // private final int BIT;
-    // private final String NAME;
-    //
-    // Hitsound(int bit, String name) {
-    // BIT = bit;
-    // NAME = name;
-    // }
-    // }
 }

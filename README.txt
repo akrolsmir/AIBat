@@ -12,6 +12,8 @@ Upcoming:
 	- in-game bookmarks -> working stuff (and enabled by default)
 		- Or even better: editable ModTrace panel by changing TreeMap in DiffComparator to ArrayList or sth.
 	- Make ModTrace disableable.
+	- Welcome screen if ModTrace is blank
+	- More helpful overwrite directions
 - Categorize warnings as must fix/not
 - Aleks' issue + have reports include version info + diff
 - check for multiple hitobjects @ same time
@@ -30,6 +32,7 @@ Version 2.1-
 - Modified toolbar to be "Copy All", modified functionality accordingly
 - Check if AudioLeadIn total less than 2 secs
 - Places a '*' in front of tabs with content in them
+- Checks for unsnapped slider repeats
 
 Version 2.0- 4/17/12
 - UI Updates:

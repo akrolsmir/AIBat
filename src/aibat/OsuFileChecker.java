@@ -78,7 +78,7 @@ public class OsuFileChecker {
 		// Check if properly NC'd:
 		if (!h.isNewCombo()) {
 		    spinNCCheck += notations.get(h)
-			    + " - Perhaps add a NC on this spinner.\n";
+			    + " - Consider adding a NC on this spinner.\n";
 		}
 
 		// Check if next note properly NC'd:
@@ -87,27 +87,27 @@ public class OsuFileChecker {
 		    HitObject nextObj = iter.next();
 		    if (!(nextObj instanceof Spinner) && !nextObj.isNewCombo()) {
 			spinNCCheck += notations.get(nextObj)
-				+ " - Perhaps add a NC here, since this note follows a spinner.\n";
+				+ " - Consider adding a NC here, since this note follows a spinner.\n";
 		    }
 		    iter.previous();
 		}
 	    }
 	    else if (h instanceof Slider) {
+		Slider s = ((Slider) h);
 		// Snapping:
 		if (!t.isAlmostSnapped(h.getTime(), 1))
 		    snapCheck += notations.get(h)
 			    + " - Unsnapped slider (start).\n";
-		// TODO test this for first, middle, last.
-		// for(int i = 0; i < ((Slider)h).getRepeats(); i++)
-		// if(!t.isAlmostSnapped( ( (Slider)h ).getTimeAt(i), 1 ))
-		// snapCheck += notations.get( h )
-		// + " - Unsnapped slider (middle).\n";
+		for (int i = 1; i < s.getRepeats(); i++)
+		    if (!t.isAlmostSnapped((s).getTimeAt(i), 2))
+			snapCheck += notations.get(h)
+				+ " - Unsnapped slider (repeat).\n";
 		if (!t.isAlmostSnapped(h.getEndTime(), 2))
 		    snapCheck += notations.get(h)
 			    + " - Unsnapped slider (end).\n";
 
 		// Catmull:
-		if (((Slider) h).getSliderType().equals("C"))
+		if (s.getSliderType().equals("C"))
 		    catmullCheck += notations.get(h)
 			    + " - This slider is a Catmull slider, which is discouraged.\n";
 	    }
@@ -128,9 +128,9 @@ public class OsuFileChecker {
 	for (TimingPoint green : t.getGreenPoints()) {
 	    int time = green.getTime();
 	    if (!t.isAlmostSnapped(time, 1))
-		result += Util.formatTime(time) + " (snap to "
+		result += Util.formatTime(time) + " - snap to "
 			+ Util.formatTime(t.snap(time, ofp.getBeatDivisor()))
-			+ ")\n";
+			+ "\n";
 	}
 	if (result.length() > 0)
 	    snapCheck += "\nUnsnapped inherited (green) timing point(s) at:\n"
@@ -260,12 +260,14 @@ public class OsuFileChecker {
 	return "";
     }
 
-  //TODO understand how countdown works
+    // TODO understand how countdown works
     public String getLeadInCheck() {
 	int leadIn = ofp.getAudioLeadIn()
 		+ ofp.getHitObjects().get(0).getTime();
-	if (leadIn < MIN_LEAD_IN)//!ofp.countdownEnabled() add in if countdown adds to lead-in
-	    return "There is only " + leadIn
+	if (leadIn < MIN_LEAD_IN)// !ofp.countdownEnabled() add in if countdown
+				 // adds to lead-in
+	    return "There is only "
+		    + leadIn
 		    + " ms of audio lead-in, which is less than the minimum of "
 		    + MIN_LEAD_IN + " ms.";
 	return "";

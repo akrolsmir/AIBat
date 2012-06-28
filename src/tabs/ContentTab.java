@@ -31,6 +31,7 @@ public abstract class ContentTab extends JPanel {
     public static final String FORMAT_TO_HTML = "<b><a href=\"%2$s\" style=\"font-family:georgia;font-size:16\">%1$s</a></b><br />%3$s<br />";
     public static final String FORMAT_TO_PLAIN = "<b><u><a style=\"font-family:georgia;font-size:16\">%1$s</a></u></b><br />%4$s<br />";
     public static final String FORMAT_TO_BBCODE = "%2$s\n";
+    protected static String DEFAULT_TEXT = "<a style=\"font-family:georgia;font-size:16\">Nothing to see!</a>";
 
     private JEditorPane textArea = new JEditorPane();
 
@@ -67,11 +68,10 @@ public abstract class ContentTab extends JPanel {
     }
 
     public void showText(String toShow) {
-	if (toShow == null || toShow.length() == 0) {
-	    textArea.setText("<a style=\"font-family:georgia;font-size:16\">Nothing to see!</a>");
-	    return;
-	}
-	textArea.setText(toShow);
+	if (toShow == null || toShow.length() == 0)
+	    textArea.setText(DEFAULT_TEXT);
+	else
+	    textArea.setText(toShow);
     }
 
     public String getTabName() {

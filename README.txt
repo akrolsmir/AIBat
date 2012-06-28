@@ -12,7 +12,6 @@ Upcoming:
 	- in-game bookmarks -> working stuff (and enabled by default)
 		- Or even better: editable ModTrace panel by changing TreeMap in DiffComparator to ArrayList or sth.
 	- Make ModTrace disableable.
-	- Welcome screen if ModTrace is blank
 	- More helpful overwrite directions
 - Categorize warnings as must fix/not
 - Aleks' issue + have reports include version info + diff

@@ -23,7 +23,7 @@ public class SkinSBTab extends ContentTab {
 	allContent.put("Codeless SB Elements", s.checkCodelessElements());
 	allContent.put("Missing SB Elements", s.checkMissingElements());
 	allContent.put("SB Elements Not .png", s.checkPNG());
-	allContent.put("Epilepsy Warning", s.suggestEpilepsy());
+	//allContent.put("Epilepsy Warning", s.suggestEpilepsy());
     }
 
 }

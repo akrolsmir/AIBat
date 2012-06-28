@@ -52,6 +52,9 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 	    "Tags:", // 15
 
 	    "BeatDivisor: ", // 16
+	    "Bookmarks: ", //17
+	    
+	    "SliderMultiplier:", //18
     };
     // @formatter:on
 
@@ -99,8 +102,9 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 			if (line.charAt(i) == ':')
 			    p++;
 		    try {
-			hitObjects.add(new Slider(line, p, getSliderMultiplier(), timer
-				.getEffectiveBeatSpace(time)));
+			hitObjects.add(new Slider(line, p,
+				getSliderMultiplier(), timer
+					.getEffectiveBeatSpace(time)));
 		    }
 		    catch (Exception e) {
 			Util.errorException(e, "Slider: " + line);
@@ -183,6 +187,24 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 	return Integer.parseInt(osuInfo.get("AudioLeadIn: "));
     }
 
+    // returns null if no bookmarks, else an int[] containing all
+    public int[] getBookmarks() {
+	String bookmarksString = osuInfo.get("Bookmarks: ");
+	if (bookmarksString == null || bookmarksString.length() == 0)
+	    return null;
+	String[] bookmarksStringsArray = bookmarksString.split(",");
+	int numBookmarks = bookmarksStringsArray.length;
+	int[] bookmarks = new int[numBookmarks];
+	for (int i = 0; i < numBookmarks; i++) {
+	    bookmarks[i] = Integer.parseInt(bookmarksStringsArray[i]);
+	}
+	return bookmarks;
+    }
+
+    public double getSliderMultiplier() {
+	return Double.parseDouble(osuInfo.get("SliderMultiplier:"));
+    }
+
     public String getStackLen() {
 	return osuInfo.get("StackLeniency: ");
     }
@@ -220,11 +242,6 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 	return notations;
     }
 
-    // Gets the SliderMultiplier
-    public double getSliderMultiplier() {
-	return Double.parseDouble(Util.extract("SliderMultiplier:", contents));
-    }
-
     public ArrayList<Integer> getBreakStarts() {
 	return breakStarts;
     }
@@ -252,7 +269,7 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
     public boolean epilepsyFound() {
 	return (osuInfo.get("EpilepsyWarning: ").equals("1"));
     }
-    
+
     public boolean countdownEnabled() {
 	return (!osuInfo.get("Countdown: ").equals("0"));
     }

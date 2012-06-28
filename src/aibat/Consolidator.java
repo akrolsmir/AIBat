@@ -82,10 +82,9 @@ public class Consolidator {
 
     public String checkGenMeta() {
 	String result = "";
-	// Skip for sample set, mode, difficulty name (aka version), stack
-	// leniency
 	String[] toSkip = { "SampleSet: ", "Mode: ", "Version:",
-		"StackLeniency: ", "BeatDivisor: " };
+		"StackLeniency: ", "BeatDivisor: ", "Bookmarks: ",
+		"SliderMultiplier:" };
 	for (String title : OsuFileParser.TITLES) {
 	    if (Arrays.asList(toSkip).contains(title))
 		continue;

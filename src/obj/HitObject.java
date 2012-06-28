@@ -86,8 +86,13 @@ public abstract class HitObject {
     public String getInput() {
 	return input;
     }
-    
-    public String getPosString(){
+
+    public String getPosString() {
+	return formatPos(x, y);
+    }
+
+    protected String formatPos(int x, int y) {
 	return "{x:" + x + " y:" + y + "}";
     }
+
 }

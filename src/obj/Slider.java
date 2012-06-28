@@ -41,11 +41,11 @@ public class Slider extends HitObject {
 		allHitsounds[i] = Integer.parseInt(k[on++]);
 	    else
 		allHitsounds[i] = hitsound;
-	    //May or may not be 1 ms off, same w/ Math.floor
+	    // May or may not be 1 ms off, same w/ Math.floor
 	    allTimes[i] = (int) ((time + i * timeInterval));
 	}
 	endTime = allTimes[allTimes.length - 1];
-	
+
 	// For now, uses the last node for endX and endY
 	if (repeats % 2 == 0) {
 	    endX = x;
@@ -94,6 +94,13 @@ public class Slider extends HitObject {
 	return repeats;
     }
 
+    public String[] getNodes() {
+	int numNodes = p.length;
+	String[] nodes = new String[numNodes];
+	for (int i = 0; i < numNodes; i++)
+	    nodes[i] = formatPos(p[i][0], p[i][1]);
+	return nodes;
+    }
     // public static void main(String args[]) {
     // Slider s = new Slider("160,192,23650,6,2,B|328:192,8,170", 2, 1.7,
     // 642.054574638844);

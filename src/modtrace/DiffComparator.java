@@ -1,6 +1,7 @@
 package modtrace;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -16,15 +17,18 @@ import aibat.Util;
 
 public class DiffComparator {
     // TODO implement TreeMultiMap instead?
-    private Map<String, String> changes = new TreeMap<String, String>();
+    private ChangeTreeMap changes = new ChangeTreeMap();
     private Map<HitObject, String> origNotations;
 
     private List<HitObject> init, chng;
+
+    private int[] bookmarks;
 
     public DiffComparator(OsuFileParser orig, OsuFileParser curr) {
 	init = orig.getHitObjects();
 	chng = curr.getHitObjects();
 	origNotations = orig.getNotation();
+	bookmarks = curr.getBookmarks();
     }
 
     public String compare() {
@@ -63,7 +67,12 @@ public class DiffComparator {
 	    add(c);
 	    c = chngIter.hasNext() ? chngIter.next() : null;
 	}
-	return getChangesString();
+	// if(showBookmarks)
+	if (bookmarks != null)
+	    for (int bookmark : bookmarks) {
+		changes.put(Util.formatTime(bookmark), " ");
+	    }
+	return changes.getChangesString();
     }
 
     private void add(HitObject h) {
@@ -153,13 +162,16 @@ public class DiffComparator {
 	}
 	else if (i instanceof Slider) {
 	    Slider iS = ((Slider) i), cS = ((Slider) c);
-	    // TODO finish with moved nodes, changed repeats.
-
-	    // only for the matching times
 	    int ends = iS.getRepeats() + 1;
 	    for (int j = 0; j < ends; j++) {
-		if (iS.getTimeAt(j) == cS.getTimeAt(j))
-		    continue;
+		// if any of the times don't match, remove + add new slider.
+		if (iS.getTimeAt(j) != cS.getTimeAt(j)) {
+		    remove(i);
+		    add(c);
+		    return;
+		}
+
+		// else, check the hitsounds at each end
 		int iH = iS.getHitsoundAt(j), cH = cS.getHitsoundAt(j);
 		if (iH == cH)
 		    continue;
@@ -175,6 +187,23 @@ public class DiffComparator {
 
 		compareMsgs.add(compareHitsounds(iH, cH) + repeatPos);
 	    }
+
+	    String[] iN = iS.getNodes(), cN = cS.getNodes();
+	    for (int p = 0; p < iN.length || p < cN.length; p++) {
+		// if both nodes exist, compare them and move if appropriate
+		if (p < iN.length && p < cN.length) {
+		    if (iN[p].equals(cN[p]))
+			continue;
+		    compareMsgs.add("move node #" + (p + 1) + " to " + cN[p]);
+		}
+		// then add or remove nodes as necessary
+		else if (p < iN.length)
+		    compareMsgs.add("remove node #" + (p + 1));
+		else
+		    // if (p < cN.length)
+		    compareMsgs.add("add node #" + (p + 1) + " at " + cN[p]);
+	    }
+
 	}
 	int iH = i.getHitsound(), cH = c.getHitsound();
 	if (iH != cH)
@@ -229,21 +258,31 @@ public class DiffComparator {
 	return result.toString();
     }
 
-    // Parses changes into a nicely formatted string
-    private String getChangesString() {
-	StringBuilder result = new StringBuilder();
-	for (Entry<String, String> change : changes.entrySet()) {
-
-	    String toShow = change.getValue();
-	    if (toShow == null || toShow.length() == 0)
-		continue;
-
-	    // Capitalize + append newline
-	    toShow = Character.toUpperCase(toShow.charAt(0))
-		    + toShow.substring(1) + ".\n";
-	    result.append(change.getKey() + " - " + toShow);
+    private class ChangeTreeMap extends TreeMap<String, String> {
+	@Override
+	public String put(String key, String value) {
+	    while (this.containsKey(key)) {
+		key += ' ';
+	    }
+	    return super.put(key, value);
 	}
-	return result.toString();
+
+	// Parses changes into a nicely formatted string
+	public String getChangesString() {
+	    StringBuilder result = new StringBuilder();
+	    for (Entry<String, String> change : this.entrySet()) {
+
+		String toShow = change.getValue();
+		if (toShow == null || toShow.length() == 0)
+		    continue;
+
+		// Capitalize + append newline
+		toShow = Character.toUpperCase(toShow.charAt(0))
+			+ toShow.substring(1) + ".\n";
+		result.append(change.getKey() + " - " + toShow);
+	    }
+	    return result.toString();
+	}
     }
 
     // public static void main(String[] args) {

@@ -20,7 +20,8 @@ public class OsuFileChecker {
     private static final double MIN_STACK_LEN = 0.3;
 
     private String snapCheck = "", catmullCheck = "", spinLengthCheck = "",
-	    stackLenCheck = "", breaksCheck = "", spinNCCheck = "";
+	    stackLenCheck = "", breaksCheck = "", spinNCCheck = "",
+	    concurrentCheck = "";
 
     private StringBuilder whistle, clap, finish;
 
@@ -81,16 +82,6 @@ public class OsuFileChecker {
 			    + " - Consider adding a NC on this spinner.\n";
 		}
 
-		// Check if next note properly NC'd:
-		// TODO use better iteration/thing
-		if (iter.hasNext()) {
-		    HitObject nextObj = iter.next();
-		    if (!(nextObj instanceof Spinner) && !nextObj.isNewCombo()) {
-			spinNCCheck += notations.get(nextObj)
-				+ " - Consider adding a NC here, since this note follows a spinner.\n";
-		    }
-		    iter.previous();
-		}
 	    }
 	    else if (h instanceof Slider) {
 		Slider s = ((Slider) h);
@@ -110,6 +101,23 @@ public class OsuFileChecker {
 		if (s.getSliderType().equals("C"))
 		    catmullCheck += notations.get(h)
 			    + " - This slider is a Catmull slider, which is discouraged.\n";
+	    }
+
+	    // TODO use better iteration/thing
+	    if (iter.hasNext()) {
+		HitObject nextObj = iter.next();
+		// Check if next note properly NC'd:
+		if (h instanceof Spinner && !(nextObj instanceof Spinner)
+			&& !nextObj.isNewCombo()) {
+		    spinNCCheck += notations.get(nextObj)
+			    + " - Consider adding a NC here, since this note follows a spinner.\n";
+		}
+		// Concurrent hit objects check:
+		if (h.getEndTime() > nextObj.getTime() - 10)
+		    concurrentCheck += notations.get(h)
+			    + " - This note is too close to the next one; it ends less than 10 ms before "
+			    + notations.get(nextObj) + ".\n";
+		iter.previous();
 	    }
 	}
     }
@@ -133,7 +141,7 @@ public class OsuFileChecker {
 			+ "\n";
 	}
 	if (result.length() > 0)
-	    snapCheck += "\nUnsnapped inherited (green) timing point(s) at:\n"
+	    snapCheck += "\nUnsnapped inherited (green) sections at:\n"
 		    + result;
     }
 
@@ -269,12 +277,16 @@ public class OsuFileChecker {
 	    return "There is only "
 		    + leadIn
 		    + " ms of audio lead-in, which is less than the minimum of "
-		    + MIN_LEAD_IN + " ms.";
+		    + MIN_LEAD_IN + " ms.\n";
 	return "";
     }
 
     public String getSpinNCCheck() {
 	return spinNCCheck;
+    }
+
+    public String getConcurrentCheck() {
+	return concurrentCheck;
     }
 
 }

@@ -8,20 +8,25 @@ Thanks to everyone credited below (as well as many unnamed others) for all your 
 
 Upcoming:
 *- ModTrace
-	- Get basics working
 	- in-game bookmarks -> working stuff (and enabled by default)
 		- Or even better: editable ModTrace panel by changing TreeMap in DiffComparator to ArrayList or sth.
 	- Make ModTrace disableable.
 	- More helpful overwrite directions
 - Categorize warnings as must fix/not
-- Aleks' issue + have reports include version info + diff
-- check for multiple hitobjects @ same time
+*- Aleks' issue + have reports include version info + diff
+- Fix hitsound->bookmark forum parsing
+- Rename AllTab to Consistency, have an actual AllTab
 
 *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
 
 Changelog:
 
-Version 2.1-
+Version 3.0-
+//*- ModTrace is up and running!
+*- Checks if AudioLeadIn total is less than 2 secs
+*- Checks for unsnapped slider repeats
+*- Removed epilepsy warning (credit: HakuNoKaemi)
+*- Checks for concurrent hit objects (credit: Bliss, CDFA, peppy xP)
 - Slightly modified copy behavior of hyperlinks to make more sense
 - Reworded spinner NC warnings (credit: mm201, those)
 - Replaced "Help" menu with "Links"
@@ -29,9 +34,7 @@ Version 2.1-
 - Spinner warning changed to 1000 to reflect ranking guidelines
 - Bugfix: Scenario of missing "//Break Periods" (credit: NatsumeRin)
 - Modified toolbar to be "Copy All", modified functionality accordingly
-- Check if AudioLeadIn total less than 2 secs
 - Places a '*' in front of tabs with content in them
-- Checks for unsnapped slider repeats
 
 Version 2.0- 4/17/12
 - UI Updates:

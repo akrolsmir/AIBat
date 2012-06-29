@@ -28,6 +28,7 @@ public class osuDiffTab extends ContentTab {
 	allContent.put("Non-Downbeat Kiai Times", ofc.getWrongKiais());
 	allContent.put("Preview Point", ofc.getPreviewCheck());
 	allContent.put("Audio Lead-In", ofc.getLeadInCheck());
+	allContent.put("Concurrent Notes", ofc.getConcurrentCheck());
     }
 
 }

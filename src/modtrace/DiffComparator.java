@@ -18,17 +18,23 @@ import aibat.Util;
 public class DiffComparator {
     // TODO implement TreeMultiMap instead?
     private ChangeTreeMap changes = new ChangeTreeMap();
+
     private Map<HitObject, String> origNotations;
 
     private List<HitObject> init, chng;
 
-    private int[] bookmarks;
+    private int[] bookmarks = null;
 
-    public DiffComparator(OsuFileParser orig, OsuFileParser curr) {
+    private final static String BKMRK = " ";
+
+    public DiffComparator(OsuFileParser orig, OsuFileParser curr,
+	    boolean showBookmarks) {
 	init = orig.getHitObjects();
 	chng = curr.getHitObjects();
 	origNotations = orig.getNotation();
-	bookmarks = curr.getBookmarks();
+	if (showBookmarks)
+	    bookmarks = curr.getBookmarks();
+
     }
 
     public String compare() {
@@ -70,7 +76,7 @@ public class DiffComparator {
 	// if(showBookmarks)
 	if (bookmarks != null)
 	    for (int bookmark : bookmarks) {
-		changes.put(Util.formatTime(bookmark), " ");
+		changes.put(Util.formatTime(bookmark), BKMRK);
 	    }
 	return changes.getChangesString();
     }
@@ -275,10 +281,12 @@ public class DiffComparator {
 		String toShow = change.getValue();
 		if (toShow == null || toShow.length() == 0)
 		    continue;
-
-		// Capitalize + append newline
-		toShow = Character.toUpperCase(toShow.charAt(0))
-			+ toShow.substring(1) + ".\n";
+		// if the change is just a bookmark, no message;
+		// else, capitalize + append newline
+		toShow = toShow.equals(BKMRK) ? "\n" : Character
+			.toUpperCase(toShow.charAt(0))
+			+ toShow.substring(1)
+			+ ".\n";
 		result.append(change.getKey() + " - " + toShow);
 	    }
 	    return result.toString();

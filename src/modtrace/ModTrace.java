@@ -10,24 +10,28 @@ import javax.swing.JOptionPane;
 
 import tabs.AIBatTabbedPane;
 import tabs.ModTraceTab;
+import aibat.AIBatMenu;
 import aibat.OsuFileParser;
 
 public class ModTrace implements Runnable {
 
-    public ModTraceTab modTraceTab;
+    private ModTraceTab modTraceTab;
 
     // Maps the original file, parsed, to the corresponding new version
     private Map<OsuFileParser, File> parsedOrigFiles;
 
-    public ModTrace(List<File> osuFiles, AIBatTabbedPane tabs) {
+    private AIBatMenu menu;
+
+    public ModTrace(List<File> osuFiles, AIBatTabbedPane tabs, AIBatMenu menu) {
 	// No longer asks to start, just does it.
 	// if (!askToStart())
 	// return;
 
 	OsuFilesCopier ofc = new OsuFilesCopier(osuFiles);
 	parsedOrigFiles = ofc.getParsedOrigFiles();
+	this.menu = menu;
 
-	modTraceTab = new ModTraceTab(this);
+	modTraceTab = new ModTraceTab(this, menu);
 	tabs.add(modTraceTab.getTabName(), modTraceTab);
 	tabs.focusLast();
     }
@@ -47,14 +51,14 @@ public class ModTrace implements Runnable {
 	TreeMap<String, String> result = new TreeMap<String, String>();
 	for (Entry<OsuFileParser, File> entry : parsedOrigFiles.entrySet()) {
 	    DiffComparator d = new DiffComparator(entry.getKey(),
-		    new OsuFileParser(entry.getValue()));
+		    new OsuFileParser(entry.getValue()), menu.showBookmarks());
 	    result.put(entry.getKey().getDiff(), d.compare());
 	}
 	return result;
     }
 
     private final static int SLEEP_INTERVAL = 60000;
-    
+
     @Override
     public void run() {
 	// TODO Should something be here?
@@ -63,7 +67,8 @@ public class ModTrace implements Runnable {
 	while (true) {
 	    try {
 		Thread.sleep(SLEEP_INTERVAL);
-		System.out.println("Sleeping again for " + SLEEP_INTERVAL + " ms.");// TODO remove
+		System.out.println("Sleeping again for " + SLEEP_INTERVAL
+			+ " ms.");// TODO remove
 	    }
 	    catch (InterruptedException e) {
 		e.printStackTrace();

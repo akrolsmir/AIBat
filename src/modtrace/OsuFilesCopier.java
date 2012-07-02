@@ -13,9 +13,18 @@ import org.apache.commons.io.FileUtils;
 import aibat.OsuFileParser;
 
 public class OsuFilesCopier {
-    public final static String ORIG_SUBDIR = "origFiles\\";
+    public final static String ORIG_SUBDIR = "origFiles\\";// TODO private?
+
+    private final static String OVERWRITE_MSG = "You've run ModTrace on this map before. What would you like to do?\n\n"
+	    + "Continue from previous if:\n"
+	    + " - You're returning to an unfinished mod.\n"
+	    + " - You're viewing the mapper's changes after an update.\n"
+	    + "Start over if:\n"
+	    + " - You've just made timing changes and resnapped all notes.\n"
+	    + " - You're beginning a new mod after an update.";
 
     private List<File> osuFiles;
+
     private Map<OsuFileParser, File> parsedOrigFiles = new TreeMap<OsuFileParser, File>();
 
     // Preference about overwriting;
@@ -40,27 +49,42 @@ public class OsuFilesCopier {
 		case NONE:
 		    break overwritePreference;
 		case NO_PREFERENCE:
-		    // If All or Yes, continue. If No, None or closed, finish.
-		    // Also, save All/None preference for the rest.
-		    Object[] options = { "All", "Yes", "No", "None" };
-		    switch (JOptionPane
-			    .showOptionDialog(
-				    null,
-				    "A reference snapshot for this difficulty already exists. Would you like to overwrite it with a new one?\n\n"
-					    + "(ModTrace compares your edited .osu file against the reference snapshot.\n"
-					    + "In general, only overwrite the snapshot if you haven't begun your mod, but are about to start.)",
-				    "File already exists: \"" + destFile + "\"",
-				    JOptionPane.PLAIN_MESSAGE,
-				    JOptionPane.QUESTION_MESSAGE, null,
-				    options, options[2])) {
+		    // // If All or Yes, continue. If No, None or closed,
+		    // finish.
+		    // // Also, save All/None preference for the rest.
+		    // Object[] options = { "All", "Yes", "No", "None" };
+		    // switch (JOptionPane.showOptionDialog(null, OVERWRITE_MSG,
+		    // "File already exists: \"" + destFile + "\"",
+		    // JOptionPane.PLAIN_MESSAGE,
+		    // JOptionPane.QUESTION_MESSAGE, null, options,
+		    // options[2])) {
+		    // case 0:
+		    // overwritePreference = OP.ALL;
+		    // case 1:
+		    // break;
+		    // case 3:
+		    // overwritePreference = OP.NONE;
+		    // case 2:
+		    // default: // if window closed
+		    // break overwritePreference;
+		    // }
+		    // case ALL:
+		    // writeOrigFile(srcFile, destFile);
+		    // break;
+		    // }
+
+		    Object[] options = { "Start Over", "Continue From Previous" };
+		    switch (JOptionPane.showOptionDialog(null, OVERWRITE_MSG,
+			    "ModTrace Previously Ran",
+			    JOptionPane.PLAIN_MESSAGE,
+			    JOptionPane.QUESTION_MESSAGE, null, options,
+			    options[1])) {
 		    case 0:
 			overwritePreference = OP.ALL;
-		    case 1:
 			break;
-		    case 3:
-			overwritePreference = OP.NONE;
-		    case 2:
+		    case 1:
 		    default: // if window closed
+			overwritePreference = OP.NONE;
 			break overwritePreference;
 		    }
 		case ALL:
@@ -68,7 +92,6 @@ public class OsuFilesCopier {
 		    break;
 		}
 	    }
-
 	    parsedOrigFiles.put(new OsuFileParser(destFile), srcFile);
 	}
     }

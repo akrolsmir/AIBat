@@ -2,39 +2,48 @@ package tabs;
 
 import java.util.TreeMap;
 
+import aibat.AIBatMenu;
+
 import modtrace.ModTrace;
 
 public class ModTraceTab extends ContentTab implements Runnable {
 
-    private static final long REFRESH_INTERVAL = 10000;
+    private static final long REFRESH_INTERVAL = 4000;
+
     private ModTrace mt;
+
     private Thread thread;
-    private final static String WELCOME_MSG = "<u><a style=\"font-family:georgia;font-size:16\">Welcome to ModTrace!</a></u>\n"
-	    + "ModTrace is an automated mod-tracking system that takes your changes "
-	    + "from the osu! editor and puts them in mod format.\n\n"
 
-	    + "<u><a style=\"font-family:georgia;font-size:16\">Usage</a></u>\n"
-	    + "To use ModTrace, simply open a map in AIBat, then begin your mod. "
-	    + "Whenever you save in the editor, "
-	    + "the ModTrace tab will show all the changes you've made since it began.\n\n"
+    private AIBatMenu menu;
 
-	    + "You can also use ModTrace to assist you with rechecks! "
-	    + "When you open the map in AIBat for a recheck, if you overwrite none, "
-	    + "ModTrace shows you what the mapper has changed since you last ran ModTrace.\n\n"
+    private final static String WELCOME_MSG = "<b><u><a style=\"font-family:georgia;font-size:16\">Usage</a></u>\n"
+	    + "&#x2713; Open a map in AIBat (done!)\n"
+	    + "1. Mod that map in the osu! editor.\n"
+	    + "2. Save.\n"
+	    + "3. The ModTrace tab shows your changes!</b>\n\n"
 
-	    + "<u><a style=\"font-family:georgia;font-size:16\">Warning</a></u>\n"
-	    + "ModTrace currently looks at hit objects and hit objects only. "
-	    + "This means that metadata and timing changes WILL NOT be tracked. "
-	    + "If you are going to make timing changes, do those first, "
-	    + "then refresh AIBat and overwrite all before modding the hit objects.";
+	    + "<u><a style=\"font-family:georgia;font-size:16\">Tips</a></u>\n"
+	    + "'ModTrace' > 'Pause Modtrace' will pause the automatic refreshing.\n\n"
 
-    public ModTraceTab(ModTrace mt) {
+	    + "'ModTrace' > 'Show Bookmarks' will indicate in-editor bookmarks. "
+	    + "Use them to insert comments to the mapper!\n\n"
+
+	    + "Use ModTrace for rechecks, too! "
+	    + "Open the fixed map in AIBat and continue from previous; "
+	    + "the mapper's changes since you last ran ModTrace are shown.\n\n"
+
+	    + "<u><a style=\"font-family:georgia;font-size:16\">WARNING</a></u>\n"
+	    + "ModTrace currently looks at hit objects and hit objects ONLY. "
+	    + "This means that timing and metadata changes ARE NOT tracked. "
+	    + "If you are going to make timing changes, do those FIRST and resnap all, "
+	    + "then refresh AIBat and start ModTrace over.";
+
+    public ModTraceTab(ModTrace mt, AIBatMenu menu) {
 	super();
 	this.mt = mt;
-	// new Thread(this).start();
+	this.menu = menu;
 	thread = new Thread(this);
 	thread.start();
-	// run();
 	DEFAULT_TEXT = WELCOME_MSG.replaceAll("\\n", "<br />");
     }
 
@@ -49,15 +58,21 @@ public class ModTraceTab extends ContentTab implements Runnable {
 	allContent.putAll(mt.compareAll());
     }
 
+    public void refresh() {
+	if (menu.pauseModTrace())
+	    return;
+	fillAllContent();
+	String toShow = allContentToString(FORMAT_TO_HTML);
+	showText(toShow);
+	// invalidate();
+	// validate();
+	System.out.println("ModTrace refreshed");
+    }
+
     @Override
     public void run() {
 	while (true) {
-	    fillAllContent();
-	    String toShow = allContentToString(FORMAT_TO_HTML);
-	    showText(toShow);
-	    // invalidate();
-	    // validate();
-	    System.out.println("ModTrace Shown");
+	    refresh();
 	    try {
 		Thread.sleep(REFRESH_INTERVAL);
 	    }

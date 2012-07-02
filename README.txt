@@ -7,23 +7,20 @@ Thanks to everyone credited below (as well as many unnamed others) for all your 
 *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
 
 Upcoming:
-*- ModTrace
-	- in-game bookmarks -> working stuff (and enabled by default)
-		- Or even better: editable ModTrace panel by changing TreeMap in DiffComparator to ArrayList or sth.
-	- Make ModTrace disableable.
-	- More helpful overwrite directions
+-Editable ModTrace panel by changing TreeMap in DiffComparator to ArrayList or sth.
 - Categorize warnings as must fix/not
 *- Aleks' issue + have reports include version info + diff
 - Fix hitsound->bookmark forum parsing
 - Rename AllTab to Consistency, have an actual AllTab
+- Taiko compatibility
 
 *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
 
 Changelog:
 
 Version 3.0-
-//*- ModTrace is up and running!
-*- Checks if AudioLeadIn total is less than 2 secs
+*- ModTrace is up and running!
+*- Checks if AudioLeadIn total is less than 2000 ms
 *- Checks for unsnapped slider repeats
 *- Removed epilepsy warning (credit: HakuNoKaemi)
 *- Checks for concurrent hit objects (credit: Bliss, CDFA, peppy xP)

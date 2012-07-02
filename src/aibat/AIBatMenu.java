@@ -2,22 +2,27 @@ package aibat;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import javax.swing.AbstractButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import tabs.ModTraceTab;
+
+import modtrace.ModTrace;
+
 public class AIBatMenu extends JMenuBar {
     private JMenuItem openItem, exitItem, expClipItem, exploreItem,
 	    expHitsoundItem, searchItem, settingsTextItem, refreshItem,
-
-	    songFolderItem, addBmItem, removeBmItem, bmThisItem,
-
-	    readmeItem, forumItem, githubItem;
+	    songFolderItem, addBmItem, removeBmItem, bmThisItem, readmeItem,
+	    forumItem, githubItem, skipMTItem, bookmarksMTItem, pauseMTItem;
 
     private JMenu bookmarkMenu;// TODO remove
 
@@ -37,18 +42,18 @@ public class AIBatMenu extends JMenuBar {
 	openItem.addActionListener(fileAction);
 	openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
 		ActionEvent.CTRL_MASK));
-	exploreItem = new JMenuItem("Explore Selected Folder", 'E');
+	exploreItem = new JMenuItem("Explore Selected", 'E');
 	exploreItem.addActionListener(fileAction);
 	exploreItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 		ActionEvent.CTRL_MASK));
-	refreshItem = new JMenuItem("Refresh Selected Folder", 'R');
+	refreshItem = new JMenuItem("Refresh Selected", 'R');
 	refreshItem.addActionListener(fileAction);
 	refreshItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-	expClipItem = new JMenuItem("Export All Warnings To Clipboard", 'C');
+	expClipItem = new JMenuItem("Copy All Warnings", 'C');
 	expClipItem.addActionListener(fileAction);
 	expClipItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
 		ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
-	expHitsoundItem = new JMenuItem("Export Hitsounds to Bookmarks", 'H');
+	expHitsoundItem = new JMenuItem("Hitsounds as Bookmarks", 'H');
 	expHitsoundItem.addActionListener(fileAction);
 	exitItem = new JMenuItem("Exit", 'x');
 	exitItem.addActionListener(fileAction);
@@ -60,7 +65,6 @@ public class AIBatMenu extends JMenuBar {
 	fileMenu.add(openItem);
 	fileMenu.add(exploreItem);
 	fileMenu.add(refreshItem);
-	// fileMenu.add( songFolderItem );
 	// fileMenu.add( exportMenu );
 	fileMenu.addSeparator();
 	fileMenu.add(expClipItem);
@@ -78,7 +82,7 @@ public class AIBatMenu extends JMenuBar {
 
 	removeBmItem = new JMenuItem("Remove Bookmark", 'R');
 	removeBmItem.addActionListener(bookmarkAction);
-	bmThisItem = new JMenuItem("Bookmark This Folder", 'T');
+	bmThisItem = new JMenuItem("Bookmark This", 'T');
 	bmThisItem.addActionListener(bookmarkAction);
 	bmThisItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B,
 		ActionEvent.CTRL_MASK));
@@ -102,13 +106,25 @@ public class AIBatMenu extends JMenuBar {
 	searchMenu.add(searchItem);
 	searchMenu.add(songFolderItem);
 
-	// SETTINGS MENU
-	SettingsAction settingsAction = new SettingsAction();
-	JMenu settingsMenu = new JMenu("Settings");
-	settingsMenu.setMnemonic('t');
-	settingsTextItem = new JMenuItem("Show settings.txt", 's');
-	settingsTextItem.addActionListener(settingsAction);
-	settingsMenu.add(settingsTextItem);
+	// MODTRACE MENU
+	// ModTraceAction modTraceAction = new ModTraceAction();
+	JMenu modTraceMenu = new JMenu("ModTrace");
+	modTraceMenu.setMnemonic('M');
+
+	skipMTItem = new JCheckBoxMenuItem("Skip ModTrace", false);
+	skipMTItem.setMnemonic('S');
+	bookmarksMTItem = new JCheckBoxMenuItem("Show Bookmarks", false);
+	bookmarksMTItem.setMnemonic('B');
+	// pauseMTItem = new JCheckBoxMenuItem("Refresh Every "
+	// + (ModTraceTab.REFRESH_INTERVAL / 1000) + " Seconds", true);
+	pauseMTItem = new JCheckBoxMenuItem("Pause ModTrace", false);
+	pauseMTItem.setMnemonic('P');
+	// pauseMTItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+	// ActionEvent.CTRL_MASK));
+	modTraceMenu.add(skipMTItem);
+	modTraceMenu.addSeparator();
+	modTraceMenu.add(bookmarksMTItem);
+	modTraceMenu.add(pauseMTItem);
 
 	// LINKS MENU
 	LinksAction linksAction = new LinksAction();
@@ -117,11 +133,15 @@ public class AIBatMenu extends JMenuBar {
 
 	readmeItem = new JMenuItem("README.txt", 'R');// https://raw.github.com/akrolsmir/AIBat/master/README.txt
 	readmeItem.addActionListener(linksAction);
+	settingsTextItem = new JMenuItem("settings.txt", 'S');
+	settingsTextItem.addActionListener(linksAction);
 	forumItem = new JMenuItem("AIBat on osu! Forums", 'F');// http://osu.ppy.sh/forum/t/55305
 	forumItem.addActionListener(linksAction);
 	githubItem = new JMenuItem("AIBat on GitHub", 'G');// https://github.com/akrolsmir/AIBat
 	githubItem.addActionListener(linksAction);
 	linksMenu.add(readmeItem);
+	linksMenu.add(settingsTextItem);
+	linksMenu.addSeparator();
 	linksMenu.add(forumItem);
 	linksMenu.add(githubItem);
 
@@ -129,7 +149,7 @@ public class AIBatMenu extends JMenuBar {
 	add(fileMenu);
 	add(bookmarkMenu);
 	add(searchMenu);
-	add(settingsMenu);
+	add(modTraceMenu);
 	add(linksMenu);
     }
 
@@ -232,6 +252,13 @@ public class AIBatMenu extends JMenuBar {
 	    JMenuItem m = (JMenuItem) e.getSource();
 	    if (m == readmeItem)
 		Util.openHyperlinkInBrowser("https://raw.github.com/akrolsmir/AIBat/master/README.txt");
+	    else if (m == settingsTextItem)
+		try {
+		    Util.openFileEditor("settings.txt");
+		}
+		catch (IOException e1) {
+		    Util.errorSettings();
+		}
 	    else if (m == forumItem)
 		Util.openHyperlinkInBrowser("http://osu.ppy.sh/forum/t/55305");
 	    else if (m == githubItem)
@@ -239,19 +266,34 @@ public class AIBatMenu extends JMenuBar {
 	}
     }
 
-    private class SettingsAction implements ActionListener {
+    // Unnecessary?
+    // private class ModTraceAction implements ItemListener {
+    //
+    // @Override
+    // public void itemStateChanged(ItemEvent e) {
+    // JMenuItem m = (JMenuItem) e.getSource();
+    // if (m == skipMTItem) {
+    // }
+    // else if (m == bookmarksMTItem) {
+    // // Refresh (should take into account status of this)
+    // }
+    // else if (m == pauseMTItem) {
+    // // Refresh
+    // // (should take into account if disabled, stop refreshing)
+    // }
+    // }
+    // }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    JMenuItem m = (JMenuItem) e.getSource();
-	    if (m == settingsTextItem)
-		try {
-		    Util.openFileEditor("settings.txt");
-		}
-		catch (IOException e1) {
-		    Util.errorSettings();
-		}
-	}
+    public boolean skipModTrace() {
+	return skipMTItem.isSelected();
+    }
+
+    public boolean showBookmarks() {
+	return bookmarksMTItem.isSelected();
+    }
+
+    public boolean pauseModTrace() {
+	return pauseMTItem.isSelected();
     }
 
     private JMenu refreshAllBm(BookmarkAction bookmarkAction) {

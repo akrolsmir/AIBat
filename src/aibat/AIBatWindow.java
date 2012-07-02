@@ -33,6 +33,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
     private String directory, songFolderLoc;
     private boolean fileOpened;
     private AIBatTabbedPane tabs;
+    private AIBatMenu menu;
     private JPanel panel;
     private Consolidator c;
     private Searcher2 searcher;
@@ -51,7 +52,7 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 	catch (Exception e) {
 	    Util.errorException(e);
 	}
-	AIBatMenu menu = new AIBatMenu(this);
+	menu = new AIBatMenu(this);
 	setJMenuBar(menu);
 
 	panel = new JPanel(new BorderLayout());
@@ -198,10 +199,12 @@ public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
 		this.setTitle(VERSION + " - " + Util.cutPath(newFolder));
 		tabs.requestFocusInWindow();
 
-		// TODO Start ModTrace
-		modTraceThread.interrupt();
-		modTraceThread = new Thread(new ModTrace(c.getOsuFiles(), tabs));
-		modTraceThread.start();
+		if (!menu.skipModTrace()) {
+		    modTraceThread.interrupt();
+		    modTraceThread = new Thread(new ModTrace(c.getOsuFiles(),
+			    tabs, menu));
+		    modTraceThread.start();
+		}
 
 	    }
 	    else

@@ -27,7 +27,7 @@ import updater.Updater;
 
 //TODO shouldn't inherit Action/Key listener
 public class AIBatWindow extends JFrame implements ActionListener, KeyListener {
-    public final static String VERSION = "AIBat v2.0";
+    public final static String VERSION = "AIBat v3.0";
 
     private JTextField textField;
     private String directory, songFolderLoc;

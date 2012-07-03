@@ -6,19 +6,9 @@ Thanks to everyone credited below (as well as many unnamed others) for all your 
 
 *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
 
-Upcoming:
--Editable ModTrace panel by changing TreeMap in DiffComparator to ArrayList or sth.
-- Categorize warnings as must fix/not
-*- Aleks' issue + have reports include version info + diff
-- Fix hitsound->bookmark forum parsing
-- Rename AllTab to Consistency, have an actual AllTab
-- Taiko compatibility
-
-*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
-
 Changelog:
 
-Version 3.0-
+Version 3.0- 7/2/12
 *- ModTrace is up and running!
 *- Checks if AudioLeadIn total is less than 2000 ms
 *- Checks for unsnapped slider repeats
@@ -32,6 +22,7 @@ Version 3.0-
 - Bugfix: Scenario of missing "//Break Periods" (credit: NatsumeRin)
 - Modified toolbar to be "Copy All", modified functionality accordingly
 - Places a '*' in front of tabs with content in them
+- Included diff name in slider errors (credit: Aleks719)
 
 Version 2.0- 4/17/12
 - UI Updates:
@@ -115,6 +106,18 @@ Version 0.1b - 6/18/11
 - GUI mostly complete
 - Checks for snapping at start and end of hitobjects
 - Checks that data under [General] and [Metadata] are consistent on all diffs
+
+
+*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+
+Upcoming:
+- Editable ModTrace panel by changing TreeMap in DiffComparator to ArrayList or sth.
+	- Or insert comment feature
+- Categorize warnings as must fix/not
+- Figure out what to do for v10
+- Fix hitsound->bookmark forum parsing
+- Rename AllTab to Consistency, have an actual AllTab
+- Taiko compatibility
 
 *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
 

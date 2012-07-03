@@ -107,7 +107,8 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 					.getEffectiveBeatSpace(time)));
 		    }
 		    catch (Exception e) {
-			Util.errorException(e, "Slider: " + line);
+			Util.errorException(e, getDiffBoxed() + " Slider: "
+				+ line);
 		    }
 		    break;
 		default:

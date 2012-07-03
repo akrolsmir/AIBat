@@ -101,9 +101,11 @@ public class Slider extends HitObject {
 	    nodes[i] = formatPos(p[i][0], p[i][1]);
 	return nodes;
     }
+
     // public static void main(String args[]) {
-    // Slider s = new Slider("160,192,23650,6,2,B|328:192,8,170", 2, 1.7,
-    // 642.054574638844);
+    // Slider s = new Slider(
+    // "80,143,153056,2,0,B|64:176|72:216,2,61.8749981559814,0|2|0,0:0|0:0|0:0,0:0",
+    // 3, 1.7, 642.054574638844);
     // System.out.println(s.repeats);
     // for (int i = 0; i < s.allHitsounds.length; i++) {
     // System.out.println(s.allHitsounds[i] + ":" + s.allTimes[i]);

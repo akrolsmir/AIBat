@@ -15,7 +15,7 @@ public class OsuFileChecker {
     private static final int MIN_SPIN_LENGTH = 750, MAX_SPIN_LENGTH = 7500,
 	    MIN_BREAK_LENGTH = 750, MAX_BREAK_LENGTH = 15000,
 	    BREAK_FREQ_SUG = 90000, BREAK_FREQ_ABS = 135000,
-	    MIN_LEAD_IN = 2000, MIN_CIRCLE_SIZE = 3, MAX_CIRCLE_SIZE = 7;
+	    MIN_LEAD_IN = 2000;
 
     private static final double MIN_STACK_LEN = 0.3;
 

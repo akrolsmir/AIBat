@@ -15,9 +15,16 @@ public class Slider extends HitObject {
 
     // input format:
     // X,Y,Time,Combo,Hitsound,Type|X1:Y1|X2:Y2...,Repeats,Length,Hit1|Hit2...
-    public Slider(String input, int numPoints, double sliderX, double beatSpace) {
+    public Slider(String input, double sliderX, double beatSpace) {
 	super(input);
 	sliderType = k[on++];
+
+	//Finds the string containing only points, and counts them
+	String points = input.split(",")[5];
+	int numPoints = 1;
+	for (int i = 0; i < points.length(); i++)
+	    if (points.charAt(i) == ':')
+		numPoints++;
 
 	p = new int[numPoints][2];
 	p[0][0] = x;
@@ -102,14 +109,15 @@ public class Slider extends HitObject {
 	return nodes;
     }
 
-    // public static void main(String args[]) {
-    // Slider s = new Slider(
-    // "80,143,153056,2,0,B|64:176|72:216,2,61.8749981559814,0|2|0,0:0|0:0|0:0,0:0",
-    // 3, 1.7, 642.054574638844);
-    // System.out.println(s.repeats);
-    // for (int i = 0; i < s.allHitsounds.length; i++) {
-    // System.out.println(s.allHitsounds[i] + ":" + s.allTimes[i]);
-    // }
-    // }
+//    public static void main(String args[]) {
+//	Slider s = new Slider(
+//		"80,143,153056,2,0,B|64:176|72:216,2,61.8749981559814,0|2|0,0:0|0:0|0:0,0:0",
+//		1.7, 642.054574638844);
+//	System.out.println(s.toString());
+//	System.out.println(s.repeats);
+//	for (int i = 0; i < s.allHitsounds.length; i++) {
+//	    System.out.println(s.allHitsounds[i] + ":" + s.allTimes[i]);
+//	}
+//    }
 
 }

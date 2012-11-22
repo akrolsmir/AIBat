@@ -96,13 +96,8 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 		    break;
 		case 2:
 		    int time = Integer.parseInt(line.split(",")[2]);
-		    // Counts the number of points in slider
-		    int p = 1;
-		    for (int i = 0; i < line.length(); i++)
-			if (line.charAt(i) == ':')
-			    p++;
 		    try {
-			hitObjects.add(new Slider(line, p,
+			hitObjects.add(new Slider(line,
 				getSliderMultiplier(), timer
 					.getEffectiveBeatSpace(time)));
 		    }

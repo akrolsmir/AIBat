@@ -169,7 +169,7 @@ public class DiffComparator {
 	else if (i instanceof Slider) {
 	    Slider iS = ((Slider) i), cS = ((Slider) c);
 	    int ends = iS.getRepeats() + 1;
-	    for (int j = 0; j < ends; j++) {
+	    for (int j = 0; j < ends && j < cS.getRepeats() + 1; j++) {
 		// if any of the times don't match, remove + add new slider.
 		if (iS.getTimeAt(j) != cS.getTimeAt(j)) {
 		    remove(i);

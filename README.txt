@@ -8,6 +8,9 @@ Thanks to everyone credited below (as well as many unnamed others) for all your 
 
 Changelog:
 
+Version 3.1- 11/22/12
+- Made compatible with osu file format v10
+
 Version 3.0- 7/2/12
 *- ModTrace is up and running!
 *- Checks if AudioLeadIn total is less than 2000 ms
@@ -111,6 +114,8 @@ Version 0.1b - 6/18/11
 *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
 
 Upcoming:
+- Fully parse and interpret v10 features
+- DDL from java
 - Editable ModTrace panel by changing TreeMap in DiffComparator to ArrayList or sth.
 	- Or insert comment feature
 - Categorize warnings as must fix/not

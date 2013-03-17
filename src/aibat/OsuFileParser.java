@@ -33,35 +33,32 @@ public class OsuFileParser implements Comparable<OsuFileParser> {
 
     // @formatter:off
     public final static String[] TITLES = { 
-	    "AudioFilename: ", // index = 0
-	    "AudioLeadIn: ", // 1
-	    "PreviewTime: ", // 2
-	    "Countdown: ", // 3
-	    "SampleSet: ", // 4
-	    "StackLeniency: ", // 5
-	    "Mode: ", // 6
-	    "LetterboxInBreaks: ", // 7
-	    "SkinPreference: ", // 8
-	    "EpilepsyWarning: ", // 9
+	    "AudioFilename: ",
+	    "AudioLeadIn: ",
+	    "PreviewTime: ",
+	    "Countdown: ",
+	    "SampleSet: ",
+	    "StackLeniency: ",
+	    "Mode: ",
+	    "LetterboxInBreaks: ",
+	    "SkinPreference: ",
+	    "EpilepsyWarning: ",
 
-	    "Title:", // 10
-	    "Artist:", // 11
-	    "Creator:", // 12
-	    "Version:", // 13
-	    "Source:", // 14
-	    "Tags:", // 15
+	    "Title:",
+	    "TitleUnicode:", 
+	    "Artist:",
+	    "ArtistUnicode:",
+	    "Creator:",
+	    "Version:",
+	    "Source:",
+	    "Tags:",
 
-	    "BeatDivisor: ", // 16
-	    "Bookmarks: ", //17
+	    "BeatDivisor: ",
+	    "Bookmarks: ",
 	    
-	    "SliderMultiplier:", //18
+	    "SliderMultiplier:",
     };
     // @formatter:on
-
-    // public final static int PREVIEW_LOC = 2, SAMPLESET_LOC = 4, STACK_LOC =
-    // 5,
-    // MODE_LOC = 6, EP_LOC = 9, DIFF_LOC = 13, TAGS_LOC = 15,
-    // BEATDIV_LOC = 16;
 
     public OsuFileParser(File file) {
 	contents = Util.readFile(file);

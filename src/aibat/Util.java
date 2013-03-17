@@ -7,30 +7,21 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-
-import org.tritonus.share.sampled.TAudioFormat;
-import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 public final class Util {
 
@@ -47,7 +38,8 @@ public final class Util {
     public static String readFile(File file) {
 	StringBuilder result = new StringBuilder();
 	try {
-	    BufferedReader f = new BufferedReader(new FileReader(file));
+	    BufferedReader f = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+	    //BufferedReader f = new BufferedReader(new FileReader(file));
 	    try {
 		char c;
 		while (f.ready()) {

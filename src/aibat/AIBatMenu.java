@@ -111,7 +111,7 @@ public class AIBatMenu extends JMenuBar {
 	JMenu modTraceMenu = new JMenu("ModTrace");
 	modTraceMenu.setMnemonic('M');
 
-	skipMTItem = new JCheckBoxMenuItem("Skip ModTrace", false);
+	skipMTItem = new JCheckBoxMenuItem("Skip ModTrace", true);
 	skipMTItem.setMnemonic('S');
 	bookmarksMTItem = new JCheckBoxMenuItem("Show Bookmarks", false);
 	bookmarksMTItem.setMnemonic('B');
